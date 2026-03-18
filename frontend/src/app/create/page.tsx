@@ -30,14 +30,14 @@ const QUESTION_TYPE_OPTIONS = [
 ];
 
 const QUESTION_TYPE_MAP: Record<string, string> = {
-  'Multiple Choice Questions':    'mcq',
-  'Short Questions':              'short_answer',
-  'Long Answer Questions':        'long_answer',
-  'Diagram/Graph-Based Questions':'long_answer',
-  'Numerical Problems':           'short_answer',
-  'True or False Questions':      'true_false',
-  'Fill in the Blank':            'fill_in_blank',
-  'Descriptive Questions':        'long_answer',
+  'Multiple Choice Questions': 'mcq',
+  'Short Questions': 'short_answer',
+  'Long Answer Questions': 'long_answer',
+  'Diagram/Graph-Based Questions': 'long_answer',
+  'Numerical Problems': 'short_answer',
+  'True or False Questions': 'true_false',
+  'Fill in the Blank': 'fill_in_blank',
+  'Descriptive Questions': 'long_answer',
 };
 
 interface QuestionRow {
@@ -65,7 +65,7 @@ export default function CreateAssessmentPage() {
   const [dragOver, setDragOver] = useState(false);
   const [questionRows, setQuestionRows] = useState<QuestionRow[]>([
     { id: '1', label: 'Multiple Choice Questions', count: 4, marks: 1 },
-    { id: '2', label: 'Short Questions',           count: 3, marks: 2 },
+    { id: '2', label: 'Short Questions', count: 3, marks: 2 },
   ]);
   const currentStep = 1;
   const [errors, setErrors] = useState<Errors>({});
@@ -116,7 +116,7 @@ export default function CreateAssessmentPage() {
   };
 
   const totalQuestions = questionRows.reduce((s, r) => s + r.count, 0);
-  const totalMarks     = questionRows.reduce((s, r) => s + r.count * r.marks, 0);
+  const totalMarks = questionRows.reduce((s, r) => s + r.count * r.marks, 0);
 
   /* ── File drop ── */
   const handleDrop = (e: React.DragEvent) => {
@@ -129,7 +129,7 @@ export default function CreateAssessmentPage() {
   /* ── Validation ── */
   const validate = () => {
     const e: Errors = {};
-    if (!dueDate)   e.dueDate   = 'Due date is required';
+    if (!dueDate) e.dueDate = 'Due date is required';
     if (questionRows.length === 0) e.questions = 'Add at least one question type';
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -149,9 +149,9 @@ export default function CreateAssessmentPage() {
 
     try {
       const fd = new FormData();
-      fd.append('title',   title || `Assignment – ${new Date().toLocaleDateString()}`);
+      fd.append('title', title || `Assignment – ${new Date().toLocaleDateString()}`);
       fd.append('subject', subject || 'General');
-      fd.append('grade',   grade  || '10');
+      fd.append('grade', grade || '10');
       fd.append('dueDate', dueDate);
       fd.append('questionTypes', JSON.stringify(questionTypes));
       if (additionalInfo) fd.append('additionalInstructions', additionalInfo);
@@ -196,19 +196,10 @@ export default function CreateAssessmentPage() {
               </div>
             </div>
 
-            {/* Step progress bar */}
-            <div className="mt-4 relative h-1.5 bg-gray-200 rounded-full overflow-hidden">
-              <div
-                className="absolute inset-y-0 left-0 bg-[#1A1A2E] rounded-full transition-all duration-500"
-                style={{ width: `${(currentStep / STEPS.length) * 100}%` }}
-              />
-            </div>
-            <div className="flex justify-between mt-1.5">
-              {STEPS.map((step, i) => (
-                <span key={step} className={`text-xs font-medium ${i < currentStep ? 'text-[#1A1A2E]' : 'text-gray-400'}`}>
-                  {step}
-                </span>
-              ))}
+            {/* Progress bar — 2 bars only, no text, matching Figma */}
+            <div className="flex gap-2 mt-5">
+              <div className="flex-1 h-[5px] rounded-full bg-[#1A1A2E]" />
+              <div className="flex-1 h-[5px] rounded-full bg-gray-200" />
             </div>
           </div>
 
@@ -221,14 +212,15 @@ export default function CreateAssessmentPage() {
 
           {/* Form card */}
           <div className="mx-8">
-            <div className="bg-white rounded-3xl border border-gray-100 overflow-hidden">
-              {/* Card header */}
-              <div className="px-8 pt-7 pb-5 border-b border-gray-100">
-                <h2 className="text-base font-bold text-gray-900">Assignment Details</h2>
-                <p className="text-sm text-gray-400 mt-0.5">Basic information about your assignment</p>
-              </div>
+            <div className="bg-white rounded-3xl border border-gray-100 overflow-hidden" style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.04)' }}>
+              {/* Card content — no header divider, one seamless section like Figma */}
+              <div className="px-8 pt-7 pb-8 space-y-6">
 
-              <div className="px-8 py-6 space-y-6">
+                {/* Header */}
+                <div>
+                  <h2 className="text-base font-bold text-gray-900">Assignment Details</h2>
+                  <p className="text-sm text-gray-400 mt-0.5">Basic information about your assignment</p>
+                </div>
 
                 {/* File Upload */}
                 <div>
@@ -237,9 +229,8 @@ export default function CreateAssessmentPage() {
                     onDragLeave={() => setDragOver(false)}
                     onDrop={handleDrop}
                     onClick={() => fileInputRef.current?.click()}
-                    className={`border border-dashed rounded-2xl py-7 px-6 text-center cursor-pointer transition-all ${
-                      dragOver ? 'border-[#E8472A] bg-[#FFF5F3]' : 'border-gray-300 bg-white hover:border-gray-400'
-                    }`}
+                    className={`border border-dashed rounded-2xl py-7 px-6 text-center cursor-pointer transition-all ${dragOver ? 'border-[#E8472A] bg-[#FFF5F3]' : 'border-gray-300 bg-white hover:border-gray-400'
+                      }`}
                   >
                     {file ? (
                       <div className="flex items-center justify-center gap-3">
@@ -269,6 +260,7 @@ export default function CreateAssessmentPage() {
                       </>
                     )}
                   </div>
+                  <p className="text-xs text-gray-400 mt-3 text-center">Upload images of your preferred document/image</p>
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -278,9 +270,11 @@ export default function CreateAssessmentPage() {
                   />
                 </div>
 
+                <hr className="border-gray-100" />
+
                 {/* Due Date */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Due Date</label>
+                  <label className="block text-sm font-bold text-gray-900 mb-2">Due Date</label>
                   <div className="relative">
                     <input
                       type="date"
@@ -288,9 +282,8 @@ export default function CreateAssessmentPage() {
                       min={new Date().toISOString().split('T')[0]}
                       onChange={(e) => setDueDate(e.target.value)}
                       placeholder="Choose a chapter"
-                      className={`w-full px-4 py-3 pr-12 rounded-2xl border text-sm focus:outline-none focus:border-gray-400 transition-colors [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden ${
-                        errors.dueDate ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-white'
-                      } text-gray-700`}
+                      className={`w-full px-4 py-3 pr-12 rounded-2xl border text-sm focus:outline-none focus:border-gray-400 transition-colors [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden ${errors.dueDate ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-white'
+                        } text-gray-700`}
                     />
                     <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                   </div>
@@ -301,13 +294,15 @@ export default function CreateAssessmentPage() {
                   )}
                 </div>
 
+                <hr className="border-gray-100" />
+
                 {/* Question Type Table */}
                 <div>
                   {/* Table header */}
                   <div className="grid grid-cols-[1fr_auto_auto] gap-4 mb-3 px-1">
-                    <span className="text-sm font-semibold text-gray-700">Question Type</span>
-                    <span className="text-sm font-semibold text-gray-700 w-32 text-center">No. of Questions</span>
-                    <span className="text-sm font-semibold text-gray-700 w-24 text-center">Marks</span>
+                    <span className="text-sm font-bold text-gray-900">Question Type</span>
+                    <span className="text-sm font-bold text-gray-900 w-32 text-center">No. of Questions</span>
+                    <span className="text-sm font-bold text-gray-900 w-24 text-center">Marks</span>
                   </div>
 
                   {/* Rows */}
@@ -391,9 +386,11 @@ export default function CreateAssessmentPage() {
                   </div>
                 </div>
 
+                <hr className="border-gray-100" />
+
                 {/* Additional Information */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-bold text-gray-900 mb-2">
                     Additional Information <span className="text-gray-400 font-normal">(For better output)</span>
                   </label>
                   <textarea
@@ -401,7 +398,7 @@ export default function CreateAssessmentPage() {
                     value={additionalInfo}
                     onChange={(e) => setAdditionalInfo(e.target.value)}
                     placeholder="e.g Generate a question paper for 3 hour exam duration..."
-                    className="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-300 resize-none transition-colors"
+                    className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-300 resize-none transition-colors"
                   />
                 </div>
               </div>

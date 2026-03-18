@@ -72,10 +72,10 @@ export default function Sidebar({ assignmentCount = 0 }: SidebarProps) {
             <Link
               key={label}
               href={href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all duration-150 ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-sm transition-all duration-150 ${
                 active
-                  ? 'bg-[#1A1A2E] text-white'
-                  : 'text-gray-500 hover:bg-gray-50 hover:text-gray-800'
+                  ? 'text-gray-900 font-semibold'
+                  : 'text-gray-500 font-medium hover:bg-gray-50 hover:text-gray-800'
               }`}
             >
               <Icon className="w-[18px] h-[18px] flex-shrink-0" />
@@ -85,13 +85,18 @@ export default function Sidebar({ assignmentCount = 0 }: SidebarProps) {
                   {assignmentCount}
                 </span>
               )}
+              {label === 'My Library' && (
+                <span className="text-xs font-bold px-2 py-0.5 rounded-full min-w-[22px] text-center bg-[#E8472A] text-white">
+                  02
+                </span>
+              )}
             </Link>
           );
         })}
       </nav>
 
       {/* Bottom */}
-      <div className="px-3 pb-5 space-y-1 border-t border-gray-100 pt-3 mt-2">
+      <div className="px-3 pb-5 space-y-1 pt-3 mt-2">
         <Link
           href="/settings"
           className="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-800 transition-all"
