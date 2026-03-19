@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  Calendar, FileText, CloudUpload,
+  FileText, CloudUpload,
   X, AlertCircle, Plus, Minus, ChevronDown, ArrowLeft, ArrowRight,
   Loader2
 } from 'lucide-react';
@@ -66,6 +66,8 @@ export default function CreateAssessmentPage() {
   const [questionRows, setQuestionRows] = useState<QuestionRow[]>([
     { id: '1', label: 'Multiple Choice Questions', count: 4, marks: 1 },
     { id: '2', label: 'Short Questions', count: 3, marks: 2 },
+    { id: '3', label: 'Diagram/Graph-Based Questions', count: 5, marks: 5 },
+    { id: '4', label: 'Numerical Problems', count: 5, marks: 5 },
   ]);
   const currentStep = 1;
   const [errors, setErrors] = useState<Errors>({});
@@ -185,228 +187,245 @@ export default function CreateAssessmentPage() {
       <div className="ml-[304px] flex-1 flex flex-col min-h-screen">
         <Topbar title="Assignment" showBack />
 
-        <main className="flex-1 pt-14 pb-12">
-          {/* Page header */}
-          <div className="px-8 pt-6 pb-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-100 flex-shrink-0" />
-              <div>
-                <h1 className="text-xl font-bold text-gray-900 leading-tight">Create Assignment</h1>
-                <p className="text-sm text-gray-400 mt-0.5">Set up a new assignment for your students</p>
+        <main className="flex-1 pt-14 pb-12 bg-[#EAEAEF]">
+          <div className="max-w-[820px] mx-auto px-8">
+            {/* Page header */}
+            <div className="pt-6 pb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-100 flex-shrink-0" />
+                <div>
+                  <h1 className="text-xl font-bold text-gray-900 leading-tight">Create Assignment</h1>
+                  <p className="text-sm text-gray-400 mt-0.5">Set up a new assignment for your students</p>
+                </div>
+              </div>
+
+              {/* Progress bar */}
+              <div className="flex gap-2 mt-5">
+                <div className="flex-1 h-[5px] rounded-full bg-[#1A1A2E]" />
+                <div className="flex-1 h-[5px] rounded-full bg-gray-200" />
               </div>
             </div>
 
-            {/* Progress bar — 2 bars only, no text, matching Figma */}
-            <div className="flex gap-2 mt-5">
-              <div className="flex-1 h-[5px] rounded-full bg-[#1A1A2E]" />
-              <div className="flex-1 h-[5px] rounded-full bg-gray-200" />
-            </div>
-          </div>
+            {/* Generation progress (shown when generating) */}
+            {generationStatus !== 'idle' && (
+              <div className="mb-4">
+                <GenerationProgress status={generationStatus} message={generationMessage} />
+              </div>
+            )}
 
-          {/* Generation progress (shown when generating) */}
-          {generationStatus !== 'idle' && (
-            <div className="px-8 mb-4">
-              <GenerationProgress status={generationStatus} message={generationMessage} />
-            </div>
-          )}
+            {/* Form card */}
+            <div className="mt-2">
+              <div className="bg-[#F5F5F8] rounded-3xl border border-gray-200 overflow-hidden" style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.03)' }}>
+                {/* Card content — off-white/gray bg matching Figma, white only on inputs */}
+                <div className="px-8 pt-7 pb-8 space-y-6">
 
-          {/* Form card */}
-          <div className="mx-8">
-            <div className="bg-white rounded-3xl border border-gray-100 overflow-hidden" style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.04)' }}>
-              {/* Card content — no header divider, one seamless section like Figma */}
-              <div className="px-8 pt-7 pb-8 space-y-6">
-
-                {/* Header */}
-                <div>
-                  <h2 className="text-base font-bold text-gray-900">Assignment Details</h2>
-                  <p className="text-sm text-gray-400 mt-0.5">Basic information about your assignment</p>
-                </div>
-
-                {/* File Upload */}
-                <div>
-                  <div
-                    onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-                    onDragLeave={() => setDragOver(false)}
-                    onDrop={handleDrop}
-                    onClick={() => fileInputRef.current?.click()}
-                    className={`border border-dashed rounded-2xl py-7 px-6 text-center cursor-pointer transition-all ${dragOver ? 'border-[#E8472A] bg-[#FFF5F3]' : 'border-gray-300 bg-white hover:border-gray-400'
-                      }`}
-                  >
-                    {file ? (
-                      <div className="flex items-center justify-center gap-3">
-                        <FileText className="w-5 h-5 text-[#E8472A]" />
-                        <span className="text-sm font-medium text-gray-700">{file.name}</span>
-                        <button
-                          type="button"
-                          onClick={(e) => { e.stopPropagation(); setFile(null); if (fileInputRef.current) fileInputRef.current.value = ''; }}
-                          className="text-gray-400 hover:text-red-500 transition-colors"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                          <CloudUpload className="w-5 h-5 text-gray-400" />
-                        </div>
-                        <p className="text-sm font-medium text-gray-700 mb-1">Choose a file or drag & drop it here</p>
-                        <p className="text-xs text-gray-400 mb-4">JPEG, PNG, upto 10MB</p>
-                        <button
-                          type="button"
-                          className="px-5 py-1.5 bg-white border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
-                        >
-                          Browse Files
-                        </button>
-                      </>
-                    )}
-                  </div>
-                  <p className="text-xs text-gray-400 mt-3 text-center">Upload images of your preferred document/image</p>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".pdf,.txt,.doc,.docx,.jpg,.jpeg,.png"
-                    className="hidden"
-                    onChange={(e) => setFile(e.target.files?.[0] || null)}
-                  />
-                </div>
-
-                <hr className="border-gray-100" />
-
-                {/* Due Date */}
-                <div>
-                  <label className="block text-sm font-bold text-gray-900 mb-2">Due Date</label>
-                  <div className="relative">
-                    <input
-                      type="date"
-                      value={dueDate}
-                      min={new Date().toISOString().split('T')[0]}
-                      onChange={(e) => setDueDate(e.target.value)}
-                      placeholder="Choose a chapter"
-                      className={`w-full px-4 py-3 pr-12 rounded-2xl border text-sm focus:outline-none focus:border-gray-400 transition-colors [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden ${errors.dueDate ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-white'
-                        } text-gray-700`}
-                    />
-                    <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                  </div>
-                  {errors.dueDate && (
-                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />{errors.dueDate}
-                    </p>
-                  )}
-                </div>
-
-                <hr className="border-gray-100" />
-
-                {/* Question Type Table */}
-                <div>
-                  {/* Table header */}
-                  <div className="grid grid-cols-[1fr_auto_auto] gap-4 mb-3 px-1">
-                    <span className="text-sm font-bold text-gray-900">Question Type</span>
-                    <span className="text-sm font-bold text-gray-900 w-32 text-center">No. of Questions</span>
-                    <span className="text-sm font-bold text-gray-900 w-24 text-center">Marks</span>
+                  {/* Header */}
+                  <div>
+                    <h2 className="text-base font-bold text-gray-900">Assignment Details</h2>
+                    <p className="text-sm text-gray-400 mt-0.5">Basic information about your assignment</p>
                   </div>
 
-                  {/* Rows */}
-                  <div className="space-y-2.5">
-                    {questionRows.map((row) => (
-                      <div key={row.id} className="grid grid-cols-[1fr_auto_auto] gap-4 items-center">
-                        {/* Type dropdown + X */}
-                        <div className="flex items-center gap-2">
-                          <div className="relative flex-1">
-                            <select
-                              value={row.label}
-                              onChange={(e) => updateRow(row.id, 'label', e.target.value)}
-                              className="w-full appearance-none px-4 py-2.5 pr-9 rounded-2xl border border-gray-200 bg-white text-sm text-gray-700 focus:outline-none focus:border-gray-300 transition-colors"
-                            >
-                              {QUESTION_TYPE_OPTIONS.map((opt) => (
-                                <option key={opt} value={opt}>{opt}</option>
-                              ))}
-                            </select>
-                            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
-                          </div>
+                  {/* File Upload */}
+                  <div>
+                    <div
+                      onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+                      onDragLeave={() => setDragOver(false)}
+                      onDrop={handleDrop}
+                      onClick={() => fileInputRef.current?.click()}
+                      className={`border border-dashed rounded-2xl py-7 px-6 text-center cursor-pointer transition-all ${dragOver ? 'border-[#E8472A] bg-[#FFF5F3]' : 'border-gray-300 bg-white hover:border-gray-400'
+                        }`}
+                    >
+                      {file ? (
+                        <div className="flex items-center justify-center gap-3">
+                          <FileText className="w-5 h-5 text-[#E8472A]" />
+                          <span className="text-sm font-medium text-gray-700">{file.name}</span>
                           <button
                             type="button"
-                            onClick={() => removeRow(row.id)}
-                            className="w-7 h-7 rounded-lg border border-gray-200 flex items-center justify-center hover:bg-red-50 hover:border-red-200 transition-colors flex-shrink-0"
+                            onClick={(e) => { e.stopPropagation(); setFile(null); if (fileInputRef.current) fileInputRef.current.value = ''; }}
+                            className="text-gray-400 hover:text-red-500 transition-colors"
                           >
-                            <X className="w-3.5 h-3.5 text-gray-400 hover:text-red-500" />
+                            <X className="w-4 h-4" />
                           </button>
                         </div>
-
-                        {/* Count stepper */}
-                        <div className="flex items-center gap-1.5 w-32 justify-center">
-                          <button type="button" onClick={() => clampCount(row.id, -1)}
-                            className="w-7 h-7 rounded-lg border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">
-                            <Minus className="w-3 h-3 text-gray-500" />
+                      ) : (
+                        <>
+                          <div className="mx-auto mb-3 w-fit">
+                            <CloudUpload className="w-8 h-8 text-gray-400" />
+                          </div>
+                          <p className="text-sm font-medium text-gray-700 mb-1">Choose a file or drag & drop it here</p>
+                          <p className="text-xs text-gray-400 mb-4">JPEG, PNG, upto 10MB</p>
+                          <button
+                            type="button"
+                            className="px-5 py-1.5 bg-white border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
+                          >
+                            Browse Files
                           </button>
-                          <span className="w-8 text-center text-sm font-bold text-gray-800">{row.count}</span>
-                          <button type="button" onClick={() => clampCount(row.id, 1)}
-                            className="w-7 h-7 rounded-lg border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">
-                            <Plus className="w-3 h-3 text-gray-500" />
-                          </button>
-                        </div>
-
-                        {/* Marks stepper */}
-                        <div className="flex items-center gap-1.5 w-24 justify-center">
-                          <button type="button" onClick={() => clampMarks(row.id, -1)}
-                            className="w-7 h-7 rounded-lg border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">
-                            <Minus className="w-3 h-3 text-gray-500" />
-                          </button>
-                          <span className="w-6 text-center text-sm font-bold text-gray-800">{row.marks}</span>
-                          <button type="button" onClick={() => clampMarks(row.id, 1)}
-                            className="w-7 h-7 rounded-lg border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">
-                            <Plus className="w-3 h-3 text-gray-500" />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
+                        </>
+                      )}
+                    </div>
+                    <p className="text-xs text-gray-400 mt-3 text-center">Upload images of your preferred document/image</p>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept=".pdf,.txt,.doc,.docx,.jpg,.jpeg,.png"
+                      className="hidden"
+                      onChange={(e) => setFile(e.target.files?.[0] || null)}
+                    />
                   </div>
 
-                  {errors.questions && (
-                    <p className="mt-2 text-xs text-red-500 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />{errors.questions}
-                    </p>
-                  )}
+                  <hr className="border-gray-100" />
 
-                  {/* Add row + totals */}
-                  <div className="flex items-center justify-between mt-4">
-                    <button
-                      type="button"
-                      onClick={addRow}
-                      className="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors"
-                    >
-                      <div className="w-6 h-6 rounded-full bg-[#1A1A2E] flex items-center justify-center">
-                        <Plus className="w-3.5 h-3.5 text-white" />
+                  {/* Due Date */}
+                  <div>
+                    <label className="block text-sm font-bold text-gray-900 mb-2">Due Date</label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={dueDate}
+                        placeholder="Choose a chapter"
+                        onFocus={(e) => {
+                          e.currentTarget.type = 'date';
+                          e.currentTarget.min = new Date().toISOString().split('T')[0];
+                        }}
+                        onBlur={(e) => {
+                          if (!e.currentTarget.value) e.currentTarget.type = 'text';
+                        }}
+                        onChange={(e) => setDueDate(e.target.value)}
+                        className={`w-full px-4 py-3 pr-12 rounded-full border text-sm focus:outline-none focus:border-gray-400 transition-colors [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute ${errors.dueDate ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-white'
+                          } ${dueDate ? 'text-gray-700' : 'text-gray-400'}`}
+                      />
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 border border-gray-200 rounded-lg flex items-center justify-center pointer-events-none">
+                        <svg className="w-3.5 h-3.5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                          <line x1="16" y1="2" x2="16" y2="6" />
+                          <line x1="8" y1="2" x2="8" y2="6" />
+                          <line x1="3" y1="10" x2="21" y2="10" />
+                          <line x1="12" y1="14" x2="12" y2="17" />
+                          <line x1="10.5" y1="15.5" x2="13.5" y2="15.5" />
+                        </svg>
                       </div>
-                      Add Question Type
-                    </button>
-                    <div className="text-right text-sm text-gray-500 space-y-0.5">
-                      <p>Total Questions : <span className="font-bold text-gray-900">{totalQuestions}</span></p>
-                      <p>Total Marks : <span className="font-bold text-gray-900">{totalMarks}</span></p>
+                    </div>
+                    {errors.dueDate && (
+                      <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3" />{errors.dueDate}
+                      </p>
+                    )}
+                  </div>
+
+                  <hr className="border-gray-100" />
+
+                  {/* Question Type Table */}
+                  <div>
+                    {/* Table header */}
+                    <div className="grid grid-cols-[1fr_auto_auto] gap-4 mb-3 px-1">
+                      <span className="text-sm font-bold text-gray-900">Question Type</span>
+                      <span className="text-sm font-bold text-gray-900 w-32 text-center">No. of Questions</span>
+                      <span className="text-sm font-bold text-gray-900 w-24 text-center">Marks</span>
+                    </div>
+
+                    {/* Rows */}
+                    <div className="space-y-2.5">
+                      {questionRows.map((row) => (
+                        <div key={row.id} className="grid grid-cols-[1fr_auto_auto] gap-4 items-center">
+                          {/* Type dropdown + X */}
+                          <div className="flex items-center gap-2">
+                            <div className="relative flex-1">
+                              <select
+                                value={row.label}
+                                onChange={(e) => updateRow(row.id, 'label', e.target.value)}
+                                className="w-full appearance-none px-4 py-2.5 pr-9 rounded-full border border-gray-200 bg-white text-sm text-gray-800 focus:outline-none focus:border-gray-300 transition-colors"
+                              >
+                                {QUESTION_TYPE_OPTIONS.map((opt) => (
+                                  <option key={opt} value={opt}>{opt}</option>
+                                ))}
+                              </select>
+                              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-500 pointer-events-none" />
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeRow(row.id)}
+                              className="w-8 h-8 rounded-full border border-gray-200 bg-gray-50 flex items-center justify-center hover:bg-red-50 hover:border-red-200 transition-colors flex-shrink-0"
+                            >
+                              <X className="w-3.5 h-3.5 text-gray-500" />
+                            </button>
+                          </div>
+
+                          {/* Count stepper — pill container with inner white circles */}
+                          <div className="flex items-center bg-[#EFEFEF] rounded-full px-1 py-1 gap-1 w-32 justify-center">
+                            <button type="button" onClick={() => clampCount(row.id, -1)}
+                              className="w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors flex-shrink-0">
+                              <Minus className="w-3 h-3 text-gray-600" />
+                            </button>
+                            <span className="flex-1 text-center text-sm font-semibold text-gray-800">{row.count}</span>
+                            <button type="button" onClick={() => clampCount(row.id, 1)}
+                              className="w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors flex-shrink-0">
+                              <Plus className="w-3 h-3 text-gray-600" />
+                            </button>
+                          </div>
+
+                          {/* Marks stepper — pill container with inner white circles */}
+                          <div className="flex items-center bg-[#EFEFEF] rounded-full px-1 py-1 gap-1 w-24 justify-center">
+                            <button type="button" onClick={() => clampMarks(row.id, -1)}
+                              className="w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors flex-shrink-0">
+                              <Minus className="w-3 h-3 text-gray-600" />
+                            </button>
+                            <span className="flex-1 text-center text-sm font-semibold text-gray-800">{row.marks}</span>
+                            <button type="button" onClick={() => clampMarks(row.id, 1)}
+                              className="w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors flex-shrink-0">
+                              <Plus className="w-3 h-3 text-gray-600" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {errors.questions && (
+                      <p className="mt-2 text-xs text-red-500 flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3" />{errors.questions}
+                      </p>
+                    )}
+
+                    {/* Add row + totals */}
+                    <div className="flex items-center justify-between mt-4">
+                      <button
+                        type="button"
+                        onClick={addRow}
+                        className="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors"
+                      >
+                        <div className="w-6 h-6 rounded-full bg-[#1A1A2E] flex items-center justify-center">
+                          <Plus className="w-3.5 h-3.5 text-white" />
+                        </div>
+                        Add Question Type
+                      </button>
+                      <div className="text-right text-sm text-gray-500 space-y-0.5">
+                        <p>Total Questions : <span className="font-bold text-gray-900">{totalQuestions}</span></p>
+                        <p>Total Marks : <span className="font-bold text-gray-900">{totalMarks}</span></p>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <hr className="border-gray-100" />
+                  <hr className="border-gray-100" />
 
-                {/* Additional Information */}
-                <div>
-                  <label className="block text-sm font-bold text-gray-900 mb-2">
-                    Additional Information <span className="text-gray-400 font-normal">(For better output)</span>
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={additionalInfo}
-                    onChange={(e) => setAdditionalInfo(e.target.value)}
-                    placeholder="e.g Generate a question paper for 3 hour exam duration..."
-                    className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-300 resize-none transition-colors"
-                  />
+                  {/* Additional Information */}
+                  <div>
+                    <label className="block text-sm font-bold text-gray-900 mb-2">
+                      Additional Information <span className="text-gray-400 font-normal">(For better output)</span>
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={additionalInfo}
+                      onChange={(e) => setAdditionalInfo(e.target.value)}
+                      placeholder="e.g Generate a question paper for 3 hour exam duration..."
+                      className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-300 resize-none transition-colors"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
           {/* Previous / Next (Generate) */}
-          <div className="flex items-center justify-between px-8 mt-6">
+            {/* Previous / Next (Generate) */}
+            <div className="flex items-center justify-between mt-6">
             <button
               type="button"
               onClick={() => router.push('/assignments')}
@@ -427,6 +446,7 @@ export default function CreateAssessmentPage() {
                 : <><span>Next</span><ArrowRight className="w-4 h-4" /></>
               }
             </button>
+          </div>
           </div>
         </main>
       </div>
