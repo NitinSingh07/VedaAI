@@ -47,7 +47,16 @@ export default function Sidebar({ assignmentCount = 0 }: SidebarProps) {
               <path d="M6 6L12 20L18 6" stroke="white" strokeWidth="5.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <span className="text-xl font-bold text-gray-900 tracking-tight">VedaAI</span>
+          <span
+            style={{
+              fontFamily: 'var(--font-bricolage, inherit)',
+              fontSize: 28,
+              fontWeight: 700,
+              color: '#303030',
+              letterSpacing: '-0.06em',
+              lineHeight: '20px',
+            }}
+          >VedaAI</span>
         </div>
       </div>
       {/* Create Assignment CTA — Gradient Border Button matching Figma */}

@@ -132,8 +132,8 @@ export default function ResultPage() {
   if (loading) return (
     <div className="flex min-h-screen bg-[#F0F0F5]">
       <Sidebar />
-      <div className="ml-[304px] flex-1 flex flex-col">
-        <Topbar title="Create New" showBack />
+      <div className="ml-[251px] flex-1 flex flex-col">
+        <Topbar title="Question Paper" showBack />
         <main className="flex-1 pt-20 flex items-center justify-center">
           <div className="text-center space-y-3">
             <Loader2 className="w-8 h-8 text-[#E8472A] animate-spin mx-auto" />
@@ -148,8 +148,8 @@ export default function ResultPage() {
   if (error && !paper) return (
     <div className="flex min-h-screen bg-[#F0F0F5]">
       <Sidebar />
-      <div className="ml-[304px] flex-1 flex flex-col">
-        <Topbar title="Create New" showBack />
+      <div className="ml-[251px] flex-1 flex flex-col">
+        <Topbar title="Question Paper" showBack />
         <main className="flex-1 pt-20 flex items-center justify-center">
           <div className="text-center space-y-4 max-w-sm">
             <AlertTriangle className="w-10 h-10 text-amber-500 mx-auto" />
@@ -174,8 +174,8 @@ export default function ResultPage() {
   return (
     <div className="flex min-h-screen bg-[#F0F0F5]">
       <Sidebar />
-      <div className="ml-[304px] flex-1 flex flex-col">
-        <Topbar title="Create New" showBack />
+      <div className="ml-[251px] flex-1 flex flex-col">
+        <Topbar title="Question Paper" showBack />
 
         <main className="flex-1 pt-20 pb-12">
           {/* Dark AI message panel */}
