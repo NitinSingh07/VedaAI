@@ -16,7 +16,7 @@ export default function Topbar({ title, showBack = false }: Props) {
       className="fixed z-20 flex items-center justify-between"
       style={{
         top: 12,
-        left: 263,
+        left: 328,
         right: 12,
         height: 56,
         borderRadius: 16,

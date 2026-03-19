@@ -132,7 +132,7 @@ export default function ResultPage() {
   if (loading) return (
     <div className="flex min-h-screen bg-[#F0F0F5]">
       <Sidebar />
-      <div className="ml-[251px] flex-1 flex flex-col">
+      <div className="ml-[328px] flex-1 flex flex-col">
         <Topbar title="Question Paper" showBack />
         <main className="flex-1 pt-20 flex items-center justify-center">
           <div className="text-center space-y-3">
@@ -148,7 +148,7 @@ export default function ResultPage() {
   if (error && !paper) return (
     <div className="flex min-h-screen bg-[#F0F0F5]">
       <Sidebar />
-      <div className="ml-[251px] flex-1 flex flex-col">
+      <div className="ml-[328px] flex-1 flex flex-col">
         <Topbar title="Question Paper" showBack />
         <main className="flex-1 pt-20 flex items-center justify-center">
           <div className="text-center space-y-4 max-w-sm">
@@ -174,7 +174,7 @@ export default function ResultPage() {
   return (
     <div className="flex min-h-screen bg-[#F0F0F5]">
       <Sidebar />
-      <div className="ml-[251px] flex-1 flex flex-col">
+      <div className="ml-[328px] flex-1 flex flex-col">
         <Topbar title="Question Paper" showBack />
 
         <main className="flex-1 pt-20 pb-12">

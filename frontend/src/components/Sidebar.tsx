@@ -9,16 +9,14 @@ import {
   Sparkles,
   Library,
   Settings,
-  Plus,
-  LayoutGrid,
 } from 'lucide-react';
 
 const navItems = [
-  { href: '/assignments', icon: Home, label: 'Home', activePatterns: ['/home', '/'] },
-  { href: '/groups', icon: Users, label: 'Classes', activePatterns: ['/groups'] },
-  { href: '/assignments', icon: BookOpen, label: 'Assignments', activePatterns: ['/assignments', '/result', '/create'] },
-  { href: '/toolkit', icon: Sparkles, label: "AI Teacher's Toolkit", activePatterns: ['/toolkit'] },
-  { href: '/library', icon: Library, label: 'My Library', activePatterns: ['/library'] },
+  { href: '/assignments', icon: Home,    label: 'Home',               activePatterns: ['/home', '/'] },
+  { href: '/groups',      icon: Users,   label: 'My Groups',          activePatterns: ['/groups'] },
+  { href: '/assignments', icon: BookOpen,label: 'Assignments',        activePatterns: ['/assignments', '/result', '/create'] },
+  { href: '/toolkit',     icon: Sparkles,label: "AI Teacher's Toolkit", activePatterns: ['/toolkit'] },
+  { href: '/library',     icon: Library, label: 'My Library',         activePatterns: ['/library'] },
 ];
 
 interface SidebarProps {
@@ -28,25 +26,52 @@ interface SidebarProps {
 export default function Sidebar({ assignmentCount = 0 }: SidebarProps) {
   const pathname = usePathname();
 
-  const isActiveItem = (patterns: string[]) => {
-    if (patterns.length === 0) return false;
-    return patterns.some((p) => pathname === p || (p !== '/' && pathname.startsWith(p + '/')));
-  };
+  const isActive = (patterns: string[]) =>
+    patterns.some((p) => pathname === p || (p !== '/' && pathname.startsWith(p + '/')));
 
   return (
     <aside
-      className="fixed inset-y-0 left-0 w-[251px] bg-white flex flex-col z-30 border-r border-gray-100"
-      style={{ boxShadow: '1px 0 10px rgba(0,0,0,0.01)' }}
+      className="fixed z-30 flex flex-col"
+      style={{
+        top: 12,
+        left: 12,
+        bottom: 12,
+        width: 304,
+        borderRadius: 16,
+        background: '#FFFFFF',
+        padding: 24,
+        justifyContent: 'space-between',
+        boxShadow:
+          '0 32px 48px rgba(0,0,0,0.20), 0 16px 48px rgba(0,0,0,0.12)',
+        overflow: 'hidden',
+      }}
     >
-      {/* Logo */}
-      <div className="px-5 pt-7 pb-8">
-        <div className="flex items-center gap-3">
-          {/* VedaAI icon — 40x40, 10px radius, bulky V (18x20px) */}
-          <div className="w-10 h-10 flex-shrink-0 bg-gradient-to-br from-[#E56820] to-[#D45E3E] rounded-[10px] flex items-center justify-center overflow-hidden">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 6L12 20L18 6" stroke="white" strokeWidth="5.5" strokeLinecap="round" strokeLinejoin="round" />
+      {/* ── TOP: logo + CTA + nav (gap 56px between groups) ── */}
+      <div className="flex flex-col" style={{ gap: 32 }}>
+
+        {/* Logo */}
+        <div className="flex items-center" style={{ gap: 10 }}>
+          {/* Icon — 40×40, radius 10, gradient #E56820→#D45E3E */}
+          <div
+            className="flex-shrink-0 flex items-center justify-center"
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 10,
+              background: 'linear-gradient(135deg, #E56820 0%, #D45E3E 100%)',
+            }}
+          >
+            <svg width="20" height="22" viewBox="0 0 20 22" fill="none">
+              <path
+                d="M3 3L10 19L17 3"
+                stroke="white"
+                strokeWidth="5.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </div>
+          {/* VedaAI — Bricolage Grotesque, Bold 700, 28px, -6%, #303030 */}
           <span
             style={{
               fontFamily: 'var(--font-bricolage, inherit)',
@@ -56,67 +81,150 @@ export default function Sidebar({ assignmentCount = 0 }: SidebarProps) {
               letterSpacing: '-0.06em',
               lineHeight: '20px',
             }}
-          >VedaAI</span>
+          >
+            VedaAI
+          </span>
         </div>
-      </div>
-      {/* Create Assignment CTA — Gradient Border Button matching Figma */}
-      <div className="px-1 mb-6">
-        <div className="h-[42px] p-[4px] rounded-full bg-gradient-to-r from-[#FF7950] to-[#C0350A] shadow-sm">
+
+        {/* Create Assignment CTA — dark pill with gradient border */}
+        <div
+          className="p-[1.5px] rounded-full"
+          style={{
+            background: 'linear-gradient(to right, #FF7950, #C0350A)',
+          }}
+        >
           <Link
             href="/create"
-            className="flex items-center justify-center gap-2.5 w-full h-full bg-[#272727] text-white font-bold text-xs rounded-full hover:bg-black transition-all px-[43px]"
+            className="flex items-center justify-center rounded-full transition-all hover:opacity-90"
+            style={{
+              gap: 8,
+              height: 44,
+              background: '#1E1E1E',
+              color: '#FFFFFF',
+              fontWeight: 700,
+              fontSize: 13,
+              textDecoration: 'none',
+              letterSpacing: '-0.02em',
+            }}
           >
-            <Sparkles className="w-3.5 h-3.5 fill-white" />
+            <Sparkles
+              style={{ width: 14, height: 14, fill: 'white', stroke: 'none' }}
+            />
             Create Assignment
           </Link>
         </div>
-      </div>
 
-      {/* Nav — space-y-2 (8px gap) */}
-      <nav className="flex-1 px-3 space-y-2 overflow-y-auto">
-        {navItems.map(({ href, icon: Icon, label, activePatterns }) => {
-          const active = isActiveItem(activePatterns);
-          return (
-            <Link
-              key={label}
-              href={href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 h-[38px] ${active
-                ? 'bg-[#F0F0F0] text-gray-900 font-bold'
-                : 'text-gray-500 font-medium hover:bg-gray-50 hover:text-gray-800'
-                }`}
-            >
-              <Icon className="w-[18px] h-[18px] flex-shrink-0" />
-                <span className="flex-1 text-[13px]">{label}</span>
+        {/* Nav items */}
+        <nav className="flex flex-col" style={{ gap: 4 }}>
+          {navItems.map(({ href, icon: Icon, label, activePatterns }) => {
+            const active = isActive(activePatterns);
+            return (
+              <Link
+                key={label}
+                href={href}
+                className="flex items-center transition-colors"
+                style={{
+                  gap: 12,
+                  padding: '10px 12px',
+                  borderRadius: 10,
+                  height: 40,
+                  textDecoration: 'none',
+                  fontSize: 13,
+                  fontWeight: active ? 700 : 500,
+                  color: active ? '#303030' : '#A9A9A9',
+                  background: active ? '#F0F0F0' : 'transparent',
+                }}
+              >
+                <Icon
+                  style={{ width: 18, height: 18, flexShrink: 0 }}
+                />
+                <span style={{ flex: 1 }}>{label}</span>
                 {label === 'Assignments' && assignmentCount > 0 && (
-                  <span className="text-xs font-bold px-2 py-0.5 rounded-full min-w-[22px] text-center bg-[#E8472A] text-white">
+                  <span
+                    style={{
+                      background: '#E8472A',
+                      color: 'white',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      padding: '2px 7px',
+                      borderRadius: 100,
+                    }}
+                  >
                     {assignmentCount}
                   </span>
                 )}
-            </Link>
-          );
-        })}
-      </nav>
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
 
-      {/* Bottom */}
-      <div className="px-3 pb-6 space-y-4 pt-3 mt-auto">
+      {/* ── BOTTOM: settings + school card ── */}
+      <div className="flex flex-col" style={{ gap: 12 }}>
         <Link
           href="/settings"
-          className="flex items-center gap-3 px-3 py-1.5 text-sm font-medium text-gray-400 hover:text-gray-600 transition-all"
+          className="flex items-center transition-colors hover:opacity-80"
+          style={{
+            gap: 12,
+            padding: '6px 12px',
+            textDecoration: 'none',
+            fontSize: 13,
+            fontWeight: 500,
+            color: '#A9A9A9',
+          }}
         >
-          <Settings className="w-[18px] h-[18px] flex-shrink-0" />
-          <span className="text-[13px]">Settings</span>
+          <Settings style={{ width: 18, height: 18, flexShrink: 0 }} />
+          <span>Settings</span>
         </Link>
 
-        {/* School profile card — Figma #F0F0F0 gray box */}
-        <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#F0F0F0] hover:bg-gray-200 transition-colors cursor-pointer">
-          <div className="w-9 h-9 rounded-full bg-white flex-shrink-0 overflow-hidden border border-gray-100 flex items-center justify-center">
-            <svg className="w-6 h-6 text-orange-500" viewBox="0 0 24 24" fill="currentColor">
+        {/* Delhi Public School card — #F0F0F0 bg, radius 16 */}
+        <div
+          className="flex items-center cursor-pointer hover:opacity-80 transition-opacity"
+          style={{
+            gap: 12,
+            padding: '12px 16px',
+            borderRadius: 16,
+            background: '#F0F0F0',
+          }}
+        >
+          <div
+            className="flex-shrink-0 flex items-center justify-center overflow-hidden"
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 100,
+              background: 'white',
+              border: '1px solid rgba(0,0,0,0.06)',
+            }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#E8472A">
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
             </svg>
           </div>
-          <div className="min-w-0">
-            <p className="text-[13px] font-bold text-gray-900 truncate leading-tight">Delhi Public School</p>
-            <p className="text-[11px] text-gray-400 truncate leading-tight mt-0.5">Bokaro Steel City</p>
+          <div style={{ minWidth: 0 }}>
+            <p
+              style={{
+                fontSize: 13,
+                fontWeight: 700,
+                color: '#303030',
+                lineHeight: 1.2,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Delhi Public School
+            </p>
+            <p
+              style={{
+                fontSize: 11,
+                color: '#A9A9A9',
+                lineHeight: 1.4,
+                marginTop: 2,
+              }}
+            >
+              Bokaro Steel City
+            </p>
           </div>
         </div>
       </div>

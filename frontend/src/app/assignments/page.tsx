@@ -62,7 +62,7 @@ export default function AssignmentsPage() {
   return (
     <div className="flex min-h-screen bg-[#F0F0F5]">
       <Sidebar assignmentCount={assignments.length} />
-      <div className="ml-[251px] flex-1 flex flex-col min-h-screen">
+      <div className="ml-[328px] flex-1 flex flex-col min-h-screen">
         <Topbar title="Assignment" showBack />
 
         <main className="flex-1 pt-20 pb-24">

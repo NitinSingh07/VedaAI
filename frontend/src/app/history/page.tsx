@@ -55,7 +55,7 @@ export default function HistoryPage() {
   return (
     <div className="flex min-h-screen bg-[#F5F5F7]">
       <Sidebar />
-      <div className="ml-[251px] flex-1 flex flex-col">
+      <div className="ml-[328px] flex-1 flex flex-col">
         <Topbar title="History" />
 
       <main className="flex-1 pt-20 p-8">
