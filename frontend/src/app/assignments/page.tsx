@@ -101,36 +101,100 @@ export default function AssignmentsPage() {
 
 function EmptyState() {
   return (
-    <div className="flex flex-col items-center justify-center h-full py-24 px-8 text-center">
-      <div className="mb-8">
-        <svg width="220" height="180" viewBox="0 0 220 180" fill="none">
-          <circle cx="110" cy="90" r="72" fill="#E8E8EF" />
-          <rect x="72" y="34" width="60" height="80" rx="8" fill="white" stroke="#D8D8E8" strokeWidth="1.5"/>
-          <rect x="82" y="50" width="40" height="3.5" rx="2" fill="#D8D8E8"/>
-          <rect x="82" y="60" width="30" height="3.5" rx="2" fill="#D8D8E8"/>
-          <rect x="82" y="70" width="35" height="3.5" rx="2" fill="#D8D8E8"/>
-          <rect x="82" y="80" width="22" height="3.5" rx="2" fill="#D8D8E8"/>
-          <circle cx="130" cy="98" r="26" fill="white" stroke="#D8D8E8" strokeWidth="2"/>
-          <circle cx="130" cy="98" r="18" fill="#FDE8E8"/>
-          <path d="M122 90L138 106M138 90L122 106" stroke="#E8472A" strokeWidth="3" strokeLinecap="round"/>
-          <path d="M143 112L157 126" stroke="#C8C8D8" strokeWidth="5" strokeLinecap="round"/>
-          <path d="M78 128 L80.5 125 L83 128 L80.5 131 Z" fill="#E8472A" opacity="0.35"/>
-          <circle cx="162" cy="58" r="4.5" fill="#E8472A" opacity="0.18"/>
-          <path d="M64 78 L66 75.5 L68 78 L66 80.5 Z" fill="#1A1A2E" opacity="0.18"/>
+    <div className="flex flex-col items-center justify-center min-h-[600px] px-8 text-center py-16">
+      {/* Precision Illustration Area — (Reference 691: 1:1 Surgical Rebuild) */}
+      <div className="mb-12 relative">
+        <svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="blobGradient" x1="150" y1="30" x2="150" y2="270" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#F2F2F2" />
+              <stop offset="100%" stopColor="#EFEFEF" />
+            </linearGradient>
+            <linearGradient id="lensGlassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="white" />
+              <stop offset="100%" stopColor="#FFADAD" />
+            </linearGradient>
+            <filter id="glareBlur" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="8" />
+            </filter>
+            <filter id="cloudShadow" x="-20%" y="-20%" width="140%" height="150%">
+              <feDropShadow dx="6" dy="4" stdDeviation="6.5" floodColor="#1B77B8" floodOpacity="0.09" />
+            </filter>
+            <filter id="docShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="20" stdDeviation="15" floodColor="#929292" floodOpacity="0.19" />
+            </filter>
+          </defs>
+
+          {/* Background blob (Reference 598/691: 240x240) */}
+          <circle cx="150" cy="150" r="120" fill="url(#blobGradient)" />
+
+          {/* Loopy 'Spring' Swirl Doodle (Reference 691: 82x74 - Surgical Path) */}
+          <path d="M40 85C22 75 16 100 28 115C40 130 65 125 70 110C75 95 60 80 45 85C30 90 30 120 50 130C70 140 90 125 85 105C80 85 60 80 45 85C35 90 35 110 50 115" stroke="#011625" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.9" />
+          
+          {/* Cloud (Reference 691: 70.22 x 40.39 with Blue Shadow) */}
+          <g filter="url(#cloudShadow)">
+            <rect x="210" y="80" width="70.22" height="40.39" rx="20.2" fill="white" />
+            <circle cx="230" cy="95" r="8" fill="#D4D4D4" opacity="0.4" />
+            <rect x="245" y="92" width="20" height="6" rx="3" fill="#D4D4D4" opacity="0.3" />
+          </g>
+
+          {/* Document / Page (Reference 560/691: 124.54 x 155, rx=16) */}
+          <g filter="url(#docShadow)">
+            <rect x="85" y="70" width="124.54" height="155.03" rx="16" fill="white" />
+          </g>
+          
+          {/* Title Bar (Reference 560/691: 50 x 9.8, #011625) */}
+          <rect x="100" y="90" width="50" height="9.8" rx="4.9" fill="#011625" />
+          
+          {/* Text Bars (Reference 560/691: 100 x 9.8, #D4D4D4) */}
+          <rect x="100" y="108" width="100" height="9.8" rx="4.9" fill="#D4D4D4" />
+          <rect x="100" y="126" width="100" height="9.8" rx="4.9" fill="#D4D4D4" />
+          <rect x="100" y="144" width="100" height="9.8" rx="4.9" fill="#D4D4D4" />
+          <rect x="100" y="162" width="100" height="9.8" rx="4.9" fill="#D4D4D4" />
+
+          {/* Lens Handle part (Reference 691: Purple Purple Purple) */}
+          <rect x="195" y="195" width="22" height="57" rx="11" fill="#E1DCEB" transform="rotate(-40.76 195 195)" />
+
+          {/* Lens Rim (Reference 691: 125x125) */}
+          <circle cx="175" cy="165" r="62.5" fill="#E1DCEB" opacity="0.5" />
+          
+          {/* Lens Inner Glass (Reference 691: 106x106) */}
+          <circle cx="175" cy="165" r="53" fill="url(#lensGlassGradient)" />
+
+          {/* ACCENT: Blue Dot ON Lens (Reference 691 screenshot 1/4/5) */}
+          <circle cx="202" cy="148" r="6.5" fill="#417BA4" opacity="0.85" />
+
+          {/* Lens Glare (Reference 691: blurred white) */}
+          <circle cx="165" cy="155" r="50" fill="white" opacity="0.25" filter="url(#glareBlur)" />
+
+          {/* Close icon / Red X (Reference 691: center of lens) */}
+          <g transform="translate(150, 140)">
+            <path d="M10 10L40 40M40 10L10 40" stroke="#FF4040" strokeWidth="8" strokeLinecap="round" />
+          </g>
+
+          {/* Orange Diamond / Star (Reference 691 left side) */}
+          <path d="M105 180L108 176L111 180L108 184Z" fill="#E8472A" opacity="0.5" />
         </svg>
       </div>
-      <h2 className="text-xl font-bold text-gray-900 mb-2.5">No assignments yet</h2>
-      <p className="text-sm text-gray-500 max-w-xs leading-relaxed mb-8">
-        Create your first assignment to start collecting and grading student submissions.
+
+      <h2 className="text-[20px] font-[700] text-gray-900 mb-3 tracking-[-0.04em] leading-[1.4]">
+        No assignments yet
+      </h2>
+      <p className="text-[16px] font-[400] text-[#5E5E5E] opacity-80 max-w-[486px] leading-[1.4] tracking-[-0.04em] mb-12">
+        Create your first assignment to start collecting and grading student submissions. 
+        You can set up rubrics, define marking criteria, and let AI assist with grading.
       </p>
-      <Link
-        href="/create"
-        className="inline-flex items-center gap-2 bg-[#1A1A2E] text-white font-semibold text-sm px-7 py-3.5 rounded-full hover:bg-black transition-all"
-        style={{ boxShadow: '0 6px 24px rgba(26,26,46,0.3)' }}
-      >
-        <Plus className="w-4 h-4" />
-        Create Your First Assignment
-      </Link>
+
+      {/* Primary Button Dark — 46px with 1.5px Gradient Border */}
+      <div className="h-[46px] p-[1.5px] rounded-full bg-gradient-to-b from-white/60 to-gray-400/20 shadow-lg">
+        <Link
+          href="/create"
+          className="flex items-center justify-center gap-2 h-full px-6 bg-[#181818] text-white font-bold text-sm rounded-full hover:bg-black transition-all group"
+        >
+          <Plus className="w-4 h-4 group-hover:scale-110 transition-transform" />
+          Create Your First Assignment
+        </Link>
+      </div>
     </div>
   );
 }

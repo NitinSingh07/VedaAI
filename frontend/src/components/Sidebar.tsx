@@ -10,11 +10,12 @@ import {
   Library,
   Settings,
   Plus,
+  LayoutGrid,
 } from 'lucide-react';
 
 const navItems = [
   { href: '/assignments', icon: Home, label: 'Home', activePatterns: ['/home', '/'] },
-  { href: '/groups', icon: Users, label: 'My Groups', activePatterns: ['/groups'] },
+  { href: '/groups', icon: Users, label: 'Classes', activePatterns: ['/groups'] },
   { href: '/assignments', icon: BookOpen, label: 'Assignments', activePatterns: ['/assignments', '/result', '/create'] },
   { href: '/toolkit', icon: Sparkles, label: "AI Teacher's Toolkit", activePatterns: ['/toolkit'] },
   { href: '/library', icon: Library, label: 'My Library', activePatterns: ['/library'] },
@@ -49,7 +50,6 @@ export default function Sidebar({ assignmentCount = 0 }: SidebarProps) {
           <span className="text-xl font-bold text-gray-900 tracking-tight">VedaAI</span>
         </div>
       </div>
-
       {/* Create Assignment CTA — Gradient Border Button matching Figma */}
       <div className="px-1 mb-6">
         <div className="h-[42px] p-[4px] rounded-full bg-gradient-to-r from-[#FF7950] to-[#C0350A] shadow-sm">
@@ -72,17 +72,17 @@ export default function Sidebar({ assignmentCount = 0 }: SidebarProps) {
               key={label}
               href={href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 h-[38px] ${active
-                  ? 'bg-[#F0F0F0] text-gray-900 font-bold'
-                  : 'text-gray-500 font-medium hover:bg-gray-50 hover:text-gray-800'
+                ? 'bg-[#F0F0F0] text-gray-900 font-bold'
+                : 'text-gray-500 font-medium hover:bg-gray-50 hover:text-gray-800'
                 }`}
             >
               <Icon className="w-[18px] h-[18px] flex-shrink-0" />
-              <span className="flex-1 text-[13px]">{label}</span>
-              {label === 'Assignments' && assignmentCount > 0 && (
-                <span className="text-xs font-bold px-2 py-0.5 rounded-full min-w-[22px] text-center bg-[#E8472A] text-white">
-                  {assignmentCount}
-                </span>
-              )}
+                <span className="flex-1 text-[13px]">{label}</span>
+                {label === 'Assignments' && assignmentCount > 0 && (
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-full min-w-[22px] text-center bg-[#E8472A] text-white">
+                    {assignmentCount}
+                  </span>
+                )}
             </Link>
           );
         })}

@@ -23,18 +23,19 @@ export default function Topbar({ title, showBack = false }: Props) {
       }}
     >
       {/* Left: back + title */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-[10px]">
         {showBack && (
           <button
             onClick={() => router.back()}
-            className="flex items-center justify-center hover:opacity-70 transition-opacity"
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-white border border-gray-100 hover:bg-gray-50 transition-all shadow-sm"
           >
-            <ArrowLeft className="w-5 h-5 text-gray-600" />
+            <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 8H1M1 8L8 1M1 8L8 15" stroke="#011625" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </button>
         )}
-        <div className="flex items-center gap-1.5 text-sm text-gray-500">
-          {showBack && <span className="text-gray-300">›</span>}
-          <span className="font-semibold text-gray-800">{title}</span>
+        <div className="flex items-center gap-2 text-[15px]">
+          <span className="font-bold text-gray-900">{title}</span>
         </div>
       </div>
 
