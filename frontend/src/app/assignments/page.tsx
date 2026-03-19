@@ -65,7 +65,7 @@ export default function AssignmentsPage() {
       <div className="ml-[251px] flex-1 flex flex-col min-h-screen">
         <Topbar title="Assignment" showBack />
 
-        <main className="flex-1 pt-14 pb-24">
+        <main className="flex-1 pt-20 pb-24">
           {loading ? (
             <div className="flex items-center justify-center py-32">
               <Loader2 className="w-6 h-6 text-gray-400 animate-spin" />

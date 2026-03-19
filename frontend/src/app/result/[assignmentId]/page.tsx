@@ -134,7 +134,7 @@ export default function ResultPage() {
       <Sidebar />
       <div className="ml-[304px] flex-1 flex flex-col">
         <Topbar title="Create New" showBack />
-        <main className="flex-1 pt-14 flex items-center justify-center">
+        <main className="flex-1 pt-20 flex items-center justify-center">
           <div className="text-center space-y-3">
             <Loader2 className="w-8 h-8 text-[#E8472A] animate-spin mx-auto" />
             <p className="text-sm text-gray-500">Loading question paper...</p>
@@ -150,7 +150,7 @@ export default function ResultPage() {
       <Sidebar />
       <div className="ml-[304px] flex-1 flex flex-col">
         <Topbar title="Create New" showBack />
-        <main className="flex-1 pt-14 flex items-center justify-center">
+        <main className="flex-1 pt-20 flex items-center justify-center">
           <div className="text-center space-y-4 max-w-sm">
             <AlertTriangle className="w-10 h-10 text-amber-500 mx-auto" />
             <p className="text-sm font-medium text-gray-700">{error}</p>
@@ -177,7 +177,7 @@ export default function ResultPage() {
       <div className="ml-[304px] flex-1 flex flex-col">
         <Topbar title="Create New" showBack />
 
-        <main className="flex-1 pt-14 pb-12">
+        <main className="flex-1 pt-20 pb-12">
           {/* Dark AI message panel */}
           <div className="bg-[#1A1A2E] px-8 py-5 flex items-start justify-between gap-6">
             <p className="text-sm text-gray-200 leading-relaxed flex-1">

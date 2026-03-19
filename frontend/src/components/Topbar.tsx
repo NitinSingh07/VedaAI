@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Bell, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 interface Props {
   title: string;
@@ -13,47 +13,83 @@ export default function Topbar({ title, showBack = false }: Props) {
 
   return (
     <div
-      className="fixed top-0 right-0 z-20 flex items-center justify-between px-6 h-14"
+      className="fixed z-20 flex items-center justify-between"
       style={{
-        left: 251,
+        top: 12,
+        left: 263,
+        right: 12,
+        height: 56,
+        borderRadius: 16,
+        paddingLeft: 24,
+        paddingRight: 12,
         background: 'rgba(255,255,255,0.75)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
-        borderBottom: '1px solid rgba(0,0,0,0.06)',
+        boxShadow: '0 0 0 1px rgba(0,0,0,0.04), 0 16px 48px rgba(0,0,0,0.08)',
       }}
     >
-      {/* Left: back + title */}
+      {/* Left: back arrow + title */}
       <div className="flex items-center gap-[10px]">
         {showBack && (
           <button
             onClick={() => router.back()}
-            className="flex items-center justify-center w-10 h-10 rounded-full bg-white border border-gray-100 hover:bg-gray-50 transition-all shadow-sm"
+            className="flex items-center justify-center w-10 h-10 flex-shrink-0"
           >
-            <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M19 8H1M1 8L8 1M1 8L8 15" stroke="#011625" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            {/* Arrow Left icon — 18×15, stroke 2px, color #303030 */}
+            <svg width="18" height="15" viewBox="0 0 18 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17 7.5H1M1 7.5L7.5 1M1 7.5L7.5 14" stroke="#303030" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
         )}
-        <div className="flex items-center gap-2 text-[15px]">
-          <span className="font-bold text-gray-900">{title}</span>
-        </div>
+        {/* Title — Bricolage Grotesque, 600, 16px, #A9A9A9 */}
+        <span
+          className="font-semibold"
+          style={{ fontSize: 16, color: '#A9A9A9', letterSpacing: '-0.04em', lineHeight: '100%', fontFamily: 'var(--font-bricolage, inherit)' }}
+        >
+          {title}
+        </span>
       </div>
 
-      {/* Right: notification + profile */}
-      <div className="flex items-center gap-3">
-        <button className="relative flex items-center justify-center w-9 h-9 hover:opacity-70 transition-opacity">
-          <Bell className="w-5 h-5 text-gray-600" />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-white" />
+      {/* Right: bell + John Doe */}
+      <div className="flex items-center gap-[10px]">
+        {/* Bell with orange dot */}
+        <button className="relative flex items-center justify-center w-10 h-10 flex-shrink-0">
+          {/* Bell SVG — 24×24 */}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#303030" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#303030" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          {/* Orange notification dot — 8×8, #FF5623 */}
+          <span
+            className="absolute rounded-full"
+            style={{ width: 8, height: 8, background: '#FF5623', top: 8, right: 8 }}
+          />
         </button>
 
-        <button className="flex items-center gap-2.5 pl-1 pr-3 py-1 rounded-2xl hover:bg-gray-100 transition-colors">
-          <img
-            src="https://ui-avatars.com/api/?name=John+Doe&background=6C63FF&color=fff&size=32&rounded=true&bold=true"
-            alt="John Doe"
-            className="w-8 h-8 rounded-full object-cover flex-shrink-0"
-          />
-          <span className="text-sm font-medium text-gray-700">John Doe</span>
-          <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+        {/* John Doe profile */}
+        <button className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          {/* Avatar — 32×32, radius 100px, bg #F6F6F6 */}
+          <div
+            className="flex-shrink-0 overflow-hidden"
+            style={{ width: 32, height: 32, borderRadius: 100, background: '#F6F6F6' }}
+          >
+            <img
+              src="https://ui-avatars.com/api/?name=John+Doe&background=F6F6F6&color=303030&size=32&bold=true"
+              alt="John Doe"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          {/* Name + chevron — gap 4px */}
+          <div className="flex items-center gap-1">
+            <span
+              className="font-semibold"
+              style={{ fontSize: 16, color: '#A9A9A9', letterSpacing: '-0.04em', lineHeight: '100%', fontFamily: 'var(--font-bricolage, inherit)' }}
+            >
+              John Doe
+            </span>
+            {/* Chevron down — 24×24 */}
+            <ChevronDown className="text-[#A9A9A9]" style={{ width: 24, height: 24 }} />
+          </div>
         </button>
       </div>
     </div>

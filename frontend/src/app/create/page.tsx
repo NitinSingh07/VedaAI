@@ -187,7 +187,7 @@ export default function CreateAssessmentPage() {
       <div className="ml-[251px] flex-1 flex flex-col min-h-screen">
         <Topbar title="Assignment" showBack />
 
-        <main className="flex-1 pt-14 pb-12 bg-[#EAEAEF]">
+        <main className="flex-1 pt-20 pb-12 bg-[#EAEAEF]">
           <div className="max-w-[820px] mx-auto px-8">
             {/* Page header */}
             <div className="pt-6 pb-4">

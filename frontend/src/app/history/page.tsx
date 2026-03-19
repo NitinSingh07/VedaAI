@@ -58,7 +58,7 @@ export default function HistoryPage() {
       <div className="ml-[304px] flex-1 flex flex-col">
         <Topbar title="History" />
 
-      <main className="flex-1 pt-14 p-8">
+      <main className="flex-1 pt-20 p-8">
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Assessment History</h1>
