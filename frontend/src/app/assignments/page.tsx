@@ -62,7 +62,7 @@ export default function AssignmentsPage() {
   return (
     <div className="flex min-h-screen bg-[#F0F0F5]">
       <Sidebar assignmentCount={assignments.length} />
-      <div className="ml-[304px] flex-1 flex flex-col min-h-screen">
+      <div className="ml-[251px] flex-1 flex flex-col min-h-screen">
         <Topbar title="Assignment" showBack />
 
         <main className="flex-1 pt-14 pb-24">
@@ -83,7 +83,7 @@ export default function AssignmentsPage() {
         </main>
 
         {assignments.length > 0 && (
-          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 ml-[152px] z-20">
+          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 ml-[128px] z-20">
             <Link
               href="/create"
               className="flex items-center gap-2.5 bg-[#1A1A2E] text-white font-semibold text-sm px-6 py-3.5 rounded-full shadow-2xl hover:bg-black transition-all hover:scale-105 active:scale-95"

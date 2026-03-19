@@ -184,7 +184,7 @@ export default function CreateAssessmentPage() {
   return (
     <div className="flex min-h-screen bg-[#F0F0F5]">
       <Sidebar />
-      <div className="ml-[304px] flex-1 flex flex-col min-h-screen">
+      <div className="ml-[251px] flex-1 flex flex-col min-h-screen">
         <Topbar title="Assignment" showBack />
 
         <main className="flex-1 pt-14 pb-12 bg-[#EAEAEF]">

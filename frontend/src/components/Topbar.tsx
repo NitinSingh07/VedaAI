@@ -15,7 +15,7 @@ export default function Topbar({ title, showBack = false }: Props) {
     <div
       className="fixed top-0 right-0 z-20 flex items-center justify-between px-6 h-14"
       style={{
-        left: 304,
+        left: 251,
         background: 'rgba(255,255,255,0.75)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
