@@ -130,7 +130,7 @@ function EmptyState() {
 
           {/* Loopy 'Spring' Swirl Doodle (Reference 691: 82x74 - Surgical Path) */}
           <path d="M40 85C22 75 16 100 28 115C40 130 65 125 70 110C75 95 60 80 45 85C30 90 30 120 50 130C70 140 90 125 85 105C80 85 60 80 45 85C35 90 35 110 50 115" stroke="#011625" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.9" />
-          
+
           {/* Cloud (Reference 691: 70.22 x 40.39 with Blue Shadow) */}
           <g filter="url(#cloudShadow)">
             <rect x="210" y="80" width="70.22" height="40.39" rx="20.2" fill="white" />
@@ -142,10 +142,10 @@ function EmptyState() {
           <g filter="url(#docShadow)">
             <rect x="85" y="70" width="124.54" height="155.03" rx="16" fill="white" />
           </g>
-          
+
           {/* Title Bar (Reference 560/691: 50 x 9.8, #011625) */}
           <rect x="100" y="90" width="50" height="9.8" rx="4.9" fill="#011625" />
-          
+
           {/* Text Bars (Reference 560/691: 100 x 9.8, #D4D4D4) */}
           <rect x="100" y="108" width="100" height="9.8" rx="4.9" fill="#D4D4D4" />
           <rect x="100" y="126" width="100" height="9.8" rx="4.9" fill="#D4D4D4" />
@@ -157,7 +157,7 @@ function EmptyState() {
 
           {/* Lens Rim (Reference 691: 125x125) */}
           <circle cx="175" cy="165" r="62.5" fill="#E1DCEB" opacity="0.5" />
-          
+
           {/* Lens Inner Glass (Reference 691: 106x106) */}
           <circle cx="175" cy="165" r="53" fill="url(#lensGlassGradient)" />
 
@@ -181,7 +181,7 @@ function EmptyState() {
         No assignments yet
       </h2>
       <p className="text-[16px] font-[400] text-[#5E5E5E] opacity-80 max-w-[486px] leading-[1.4] tracking-[-0.04em] mb-12">
-        Create your first assignment to start collecting and grading student submissions. 
+        Create your first assignment to start collecting and grading student submissions.
         You can set up rubrics, define marking criteria, and let AI assist with grading.
       </p>
 
@@ -208,36 +208,78 @@ function FilledState({
   onDelete: (id: string) => void;
 }) {
   return (
-    <div className="px-8 pt-6 space-y-5">
-      <div className="flex items-start gap-3">
-        <div className="mt-1.5 w-2.5 h-2.5 rounded-full bg-emerald-500 flex-shrink-0 ring-4 ring-emerald-100" />
+    <div className="px-6 pt-4 flex flex-col gap-[10px]">
+      {/* Header — Figma: Fill(1100) x Hug(50), px-2, gap-4 */}
+      <div className="flex items-center gap-3 px-2">
+        <div
+          className="mt-1 flex-shrink-0 rounded-full"
+          style={{
+            width: '12px',
+            height: '12px',
+            backgroundColor: '#4BC26D',
+            border: '4px solid rgba(75, 194, 109, 0.4)',
+          }}
+        />
         <div>
-          <h1 className="text-xl font-bold text-gray-900 leading-tight">Assignments</h1>
-          <p className="text-sm text-gray-400 mt-0.5">Manage and create assignments for your classes.</p>
+          <h1
+            className="font-bold text-[#303030]"
+            style={{
+              fontFamily: 'var(--font-bricolage, inherit)',
+              fontSize: '20px',
+              fontWeight: 700,
+              lineHeight: '140%',
+              letterSpacing: '-0.04em',
+            }}
+          >Assignments</h1>
+          <p
+            className="text-[#5E5E5E] mt-0.5"
+            style={{
+              fontFamily: 'var(--font-bricolage, inherit)',
+              fontSize: '14px',
+              fontWeight: 400,
+              lineHeight: '140%',
+              letterSpacing: '-0.04em',
+            }}
+          >Manage and create assignments for your classes.</p>
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        <button className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-2xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors flex-shrink-0">
-          <SlidersHorizontal className="w-3.5 h-3.5" />
+      {/* Filter/Search Row — Figma: h=64px, rounded-[20px], px-4, bg-white, justify-between */}
+      <div
+        className="flex items-center justify-between bg-white h-[64px] rounded-[20px]"
+        style={{ border: '1px solid rgba(0,0,0,0.05)', paddingLeft: '16px', paddingRight: '16px' }}
+      >
+        {/* Filter By — Figma: Hug(77px) x Hug(20px), gap=24px */}
+        <button
+          className="flex items-center gap-2 text-[14px] font-medium text-[#5E5E5E] hover:opacity-70 transition-opacity"
+          style={{ fontFamily: 'var(--font-bricolage, inherit)' }}
+        >
+          <SlidersHorizontal className="w-4 h-4 opacity-50" />
           Filter By
         </button>
-        <div className="relative flex-1">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+
+        {/* Search — Figma: w=380px, h=44px, radius=100px, border=1px #000 20%, padding=11px 16px */}
+        <div className="relative w-[380px]">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A9A9A9]" />
           <input
             type="text"
             placeholder="Search Assignment"
             value={search}
             onChange={(e) => onSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-white rounded-2xl border border-gray-200 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-300 transition-colors"
+            className="w-full h-[44px] rounded-[100px] pl-11 pr-4 text-[14px] text-[#303030] placeholder-[#A9A9A9] focus:outline-none transition-all font-medium bg-white"
+            style={{
+              border: '1px solid rgba(0,0,0,0.2)',
+              fontFamily: 'var(--font-bricolage, inherit)',
+            }}
           />
         </div>
       </div>
 
+      {/* Cards Grid */}
       {assignments.length === 0 ? (
         <div className="text-center py-12 text-sm text-gray-400">No assignments match your search.</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
           {assignments.map((a) => (
             <AssignmentCard key={a._id} assignment={a} onDelete={onDelete} />
           ))}
@@ -263,37 +305,64 @@ function AssignmentCard({ assignment: a, onDelete }: { assignment: Assignment; o
   const assignedDate = new Date(a.createdAt).toLocaleDateString('en-GB').replace(/\//g, '-');
   const dueDate = new Date(a.dueDate).toLocaleDateString('en-GB').replace(/\//g, '-');
 
+  {/* Card — Figma: w=542px, h=162px, justify=space-between, padding=8+16=24px, border-radius=S(20) */}
   return (
-    <div className="bg-white rounded-3xl p-5 border border-gray-100 hover:shadow-md transition-all duration-200 relative">
-      <div className="flex items-start justify-between gap-3 mb-4">
-        <h3 className="font-bold text-gray-900 text-[15px] leading-snug line-clamp-2 flex-1">{a.title}</h3>
+    <div
+      className="bg-white flex flex-col justify-between relative"
+      style={{
+        borderRadius: '20px',
+        padding: '24px',
+        minHeight: '162px',
+        boxShadow: '0px 32px 48px rgba(0,0,0,0.05), 0px 16px 48px rgba(0,0,0,0.12)',
+        border: '1px solid rgba(0,0,0,0.05)',
+      }}
+    >
+      {/* Top: Title + Three Dots */}
+      <div className="flex items-start justify-between gap-3">
+        <h3
+          className="font-bold text-[#303030] text-[20px] leading-tight flex-1"
+          style={{ fontFamily: 'var(--font-bricolage, inherit)' }}
+        >
+          {a.title}
+        </h3>
         <div className="relative flex-shrink-0" ref={menuRef}>
           <button
             onClick={() => setMenuOpen((v) => !v)}
-            className="w-8 h-8 rounded-xl hover:bg-gray-100 flex items-center justify-center transition-colors"
+            className="w-6 h-6 flex items-center justify-center text-[#A9A9A9] hover:opacity-70 transition-opacity"
           >
-            <MoreVertical className="w-4 h-4 text-gray-400" />
+            <MoreVertical className="w-4 h-4" strokeWidth={2} />
           </button>
 
+          {/* Dropdown — Figma: w=Hug(140px), h=Hug(84px), radius=Number, padding=8px, gap=4px */}
+          {/* Shadows: X:0 Y:32 Blur:48 #000 5%, X:0 Y:16 Blur:48 #000 20% */}
           {menuOpen && (
             <div
-              className="absolute right-0 top-9 bg-white rounded-2xl shadow-xl border border-gray-100 py-1.5 z-30 min-w-[160px]"
-              style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}
+              className="absolute right-0 top-8 bg-white z-30"
+              style={{
+                borderRadius: '12px',
+                padding: '8px',
+                boxShadow: '0px 32px 48px rgba(0,0,0,0.05), 0px 16px 48px rgba(0,0,0,0.20)',
+              }}
             >
-              {a.status === 'completed' && (
-                <button
-                  onClick={() => { setMenuOpen(false); router.push(`/result/${a._id}`); }}
-                  className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                >
-                  <Eye className="w-3.5 h-3.5 text-gray-400" />
-                  View Assignment
-                </button>
-              )}
+              <button
+                onClick={() => { setMenuOpen(false); router.push(`/result/${a._id}`); }}
+                className="flex items-center gap-[10px] w-full h-[32px] px-2 text-[14px] font-medium text-[#303030] hover:bg-[#F6F6F6] transition-colors whitespace-nowrap"
+                style={{
+                  borderRadius: '8px',
+                  fontFamily: 'var(--font-bricolage, inherit)',
+                }}
+              >
+                View Assignment
+              </button>
+              <div style={{ height: '4px' }} />
               <button
                 onClick={() => { setMenuOpen(false); onDelete(a._id); }}
-                className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors"
+                className="flex items-center gap-[10px] w-full h-[32px] px-2 text-[14px] font-medium text-[#E8472A] hover:bg-[#F6F6F6] transition-colors whitespace-nowrap"
+                style={{
+                  borderRadius: '8px',
+                  fontFamily: 'var(--font-bricolage, inherit)',
+                }}
               >
-                <Trash2 className="w-3.5 h-3.5" />
                 Delete
               </button>
             </div>
@@ -301,27 +370,13 @@ function AssignmentCard({ assignment: a, onDelete }: { assignment: Assignment; o
         </div>
       </div>
 
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-xs font-medium bg-[#FFF0EE] text-[#E8472A] px-2.5 py-1 rounded-full">{a.subject}</span>
-        <span className="text-xs font-medium bg-gray-100 text-gray-500 px-2.5 py-1 rounded-full">Grade {a.grade}</span>
-        <span className="text-xs font-medium bg-gray-100 text-gray-500 px-2.5 py-1 rounded-full ml-auto">{a.totalMarks} marks</span>
-      </div>
-
-      <div className="flex items-center gap-4 text-xs text-gray-500">
-        <span><span className="font-semibold text-gray-700">Assigned on</span> : {assignedDate}</span>
-        <span><span className="font-semibold text-gray-700">Due</span> : {dueDate}</span>
-      </div>
-
-      <div className="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between">
-        <StatusBadge status={a.status} />
-        {a.status === 'completed' && (
-          <button
-            onClick={() => router.push(`/result/${a._id}`)}
-            className="text-xs font-semibold text-[#E8472A] hover:underline"
-          >
-            View Paper →
-          </button>
-        )}
+      {/* Bottom: Dates — Figma: justify=space-between */}
+      <div
+        className="flex items-center justify-between text-[14px]"
+        style={{ fontFamily: 'var(--font-bricolage, inherit)' }}
+      >
+        <p className="text-[#303030] font-bold">Assigned on : <span className="text-[#5E5E5E] font-normal">{assignedDate}</span></p>
+        <p className="text-[#303030] font-bold">Due : <span className="text-[#5E5E5E] font-normal">{dueDate}</span></p>
       </div>
     </div>
   );
@@ -331,8 +386,8 @@ function StatusBadge({ status }: { status: string }) {
   const cfg: Record<string, { label: string; className: string }> = {
     completed: { label: '✓ Completed', className: 'text-emerald-600 bg-emerald-50' },
     processing: { label: '⟳ Processing', className: 'text-blue-600 bg-blue-50' },
-    pending:    { label: '◷ Pending',    className: 'text-amber-600 bg-amber-50' },
-    failed:     { label: '✕ Failed',     className: 'text-red-500 bg-red-50' },
+    pending: { label: '◷ Pending', className: 'text-amber-600 bg-amber-50' },
+    failed: { label: '✕ Failed', className: 'text-red-500 bg-red-50' },
   };
   const c = cfg[status] || cfg.pending;
   return (
