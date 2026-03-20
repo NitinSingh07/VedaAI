@@ -87,32 +87,33 @@ export default function Sidebar({ assignmentCount = 0 }: SidebarProps) {
         </div>
 
         {/* Create Assignment CTA — dark pill with gradient border */}
-        <div
-          className="p-[1.5px] rounded-full"
+        <Link
+          href="/create"
+          className="flex items-center justify-center transition-all hover:opacity-90"
           style={{
-            background: 'linear-gradient(to right, #FF7950, #C0350A)',
+            gap: 8,
+            height: 42,
+            borderRadius: 100,
+            background: '#1E1E1E',
+            color: '#FFFFFF',
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: 500,
+            fontSize: 16,
+            letterSpacing: '-0.04em',
+            lineHeight: '28px',
+            textDecoration: 'none',
+            border: '2px solid transparent',
+            backgroundImage:
+              'linear-gradient(#1E1E1E, #1E1E1E), linear-gradient(135deg, #FF7950, #C0350A)',
+            backgroundOrigin: 'border-box',
+            backgroundClip: 'padding-box, border-box',
           }}
         >
-          <Link
-            href="/create"
-            className="flex items-center justify-center rounded-full transition-all hover:opacity-90"
-            style={{
-              gap: 8,
-              height: 44,
-              background: '#1E1E1E',
-              color: '#FFFFFF',
-              fontWeight: 700,
-              fontSize: 13,
-              textDecoration: 'none',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            <Sparkles
-              style={{ width: 14, height: 14, fill: 'white', stroke: 'none' }}
-            />
-            Create Assignment
-          </Link>
-        </div>
+          <Sparkles
+            style={{ width: 18, height: 18, fill: 'white', stroke: 'none', flexShrink: 0 }}
+          />
+          Create Assignment
+        </Link>
 
         {/* Nav items */}
         <nav className="flex flex-col" style={{ gap: 4 }}>
