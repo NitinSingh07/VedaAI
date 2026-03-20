@@ -83,7 +83,7 @@ export default function AssignmentsPage() {
         </main>
 
         {assignments.length > 0 && (
-          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 ml-[128px] z-20">
+          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 ml-[164px] z-20">
             <Link
               href="/create"
               className="flex items-center gap-2.5 bg-[#1A1A2E] text-white font-semibold text-sm px-6 py-3.5 rounded-full shadow-2xl hover:bg-black transition-all hover:scale-105 active:scale-95"

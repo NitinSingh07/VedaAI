@@ -174,55 +174,90 @@ export default function ResultPage() {
   return (
     <div className="flex min-h-screen bg-[#F0F0F5]">
       <Sidebar />
-      <div className="ml-[328px] flex-1 flex flex-col">
+      <div className="ml-[328px] flex-1 flex flex-col min-h-screen">
         <Topbar title="Question Paper" showBack />
 
         <main className="flex-1 pt-20 pb-12">
-          {/* Dark AI message panel */}
-          <div className="bg-[#1A1A2E] px-8 py-5 flex items-start justify-between gap-6">
-            <p className="text-sm text-gray-200 leading-relaxed flex-1">
-              Here are the customized question paper for your {paper?.subject} — Grade {paper?.grade}
-              {paper?.title ? ` (${paper.title})` : ''}:
-            </p>
-            <div className="flex items-center gap-2 flex-shrink-0">
-              {generationStatus === 'processing' && (
-                <span className="flex items-center gap-1.5 text-xs text-orange-300 font-medium">
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  Regenerating...
-                </span>
-              )}
-              <button
-                onClick={handleRegenerate}
-                disabled={regenerating || generationStatus === 'processing'}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm font-medium disabled:opacity-50 transition-colors"
-              >
-                <RefreshCw className={`w-3.5 h-3.5 ${regenerating ? 'animate-spin' : ''}`} />
-                Regenerate
-              </button>
-              <button
-                onClick={handleDownloadPDF}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white text-[#1A1A2E] text-sm font-semibold hover:bg-gray-100 transition-colors"
-              >
-                <Download className="w-3.5 h-3.5" />
-                Download as PDF
-              </button>
-            </div>
-          </div>
-
-          {/* Back link */}
-          <div className="px-8 pt-5 pb-2">
-            <button
-              onClick={() => router.push('/assignments')}
-              className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors"
+          {/* Outer dark container — Figma: w=1100, radius=32, padding=20, gap=12, bg=#5E5E5E */}
+          <div
+            className="mx-auto flex flex-col"
+            style={{
+              maxWidth: '1100px',
+              borderRadius: '32px',
+              padding: '20px',
+              gap: '12px',
+              backgroundColor: '#5E5E5E',
+            }}
+          >
+            {/* Dark message bar — Figma: Fill(1060), radius=32, border-top=4px, padding=24/32, gap=24, bg=#181818 80% */}
+            <div
+              className="flex flex-col"
+              style={{
+                borderRadius: '32px',
+                borderTop: '4px solid rgba(255,255,255,0.15)',
+                padding: '24px 32px',
+                gap: '24px',
+                backgroundColor: 'rgba(24, 24, 24, 0.80)',
+              }}
             >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Assignments
-            </button>
-          </div>
+              {/* Message text — Figma: Fill(996), gap=16 */}
+              {/* AI Text — Figma: Bricolage, 700 Bold, 20px, 140% line-height, -4% tracking */}
+              <div className="flex flex-col" style={{ gap: '16px' }}>
+                <p
+                  className="flex-1 text-white"
+                  style={{
+                    fontFamily: 'var(--font-bricolage, inherit)',
+                    fontSize: '20px',
+                    fontWeight: 700,
+                    lineHeight: '140%',
+                    letterSpacing: '-0.04em',
+                  }}
+                >
+                  {`Certainly, Lakshya! Here are customized Question Paper for your CBSE Grade ${paper?.grade} ${paper?.subject} classes on the NCERT chapters:`}
+                </p>
 
-          {/* Paper document */}
-          <div className="max-w-3xl mx-auto px-8 pb-8" ref={paperRef}>
-            {paper && <PaperDocument paper={paper} />}
+                {/* Action buttons row — Figma: Hug(200) x Hug(44), gap=16 */}
+                <div className="flex items-center" style={{ gap: '16px' }}>
+                  {generationStatus === 'processing' && (
+                    <span className="flex items-center gap-1.5 text-xs text-orange-300 font-medium">
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      Regenerating...
+                    </span>
+                  )}
+                  <button
+                    onClick={handleDownloadPDF}
+                    className="flex items-center justify-center bg-white text-[#111] hover:bg-white/90 transition-colors"
+                    style={{
+                      width: '200px',
+                      height: '44px',
+                      borderRadius: '100px',
+                      gap: '8px',
+                      fontSize: '14px',
+                      fontWeight: 600,
+                      fontFamily: 'var(--font-inter, inherit)',
+                    }}
+                  >
+                    <Download className="w-4 h-4" />
+                    Download as PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Paper document — Figma: Fill(1060), radius=L=32, border-top=4px, padding=32, gap=24, bg=white */}
+            <div
+              className="bg-white overflow-hidden"
+              style={{
+                borderRadius: '32px',
+                borderTop: '4px solid #e5e5e5',
+                padding: '32px',
+                display: 'flex',
+                flexDirection: 'column' as const,
+                gap: '24px',
+              }}
+            >
+              {paper && <PaperDocument paper={paper} />}
+            </div>
           </div>
         </main>
       </div>
@@ -233,68 +268,151 @@ export default function ResultPage() {
 /* ── Paper Document ── */
 function PaperDocument({ paper }: { paper: QuestionPaper }) {
   return (
-    <div className="bg-white rounded-3xl overflow-hidden border border-gray-100"
-      style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
-      {/* Header */}
-      <div className="text-center px-10 pt-8 pb-6 border-b-2 border-gray-900">
-        <h1 className="text-base font-bold text-gray-900">{paper.title}</h1>
-        <p className="text-sm text-gray-700 mt-1">Subject: {paper.subject}</p>
-        <p className="text-sm text-gray-700">Class: {paper.grade}</p>
-      </div>
-
-      <div className="px-10 py-6 space-y-4">
-        {/* Time + Marks */}
-        <div className="flex justify-between text-sm text-gray-700">
-          {paper.duration
-            ? <span>Time Allowed: {paper.duration} minutes</span>
-            : <span />}
-          <span>Maximum Marks: {paper.totalMarks}</span>
-        </div>
-
-        {/* Instruction */}
-        <p className="text-sm text-gray-600 italic border-b border-gray-200 pb-4">
-          All questions are compulsory unless stated otherwise.
+    <div className="flex flex-col" style={{ gap: '24px' }}>
+      {/* School Header — Figma: Inter Bold(700), 32px, 160% LH, -4% LS */}
+      <div className="text-center" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        <h1
+          style={{
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '32px',
+            fontWeight: 700,
+            lineHeight: '160%',
+            letterSpacing: '-0.04em',
+            color: '#111',
+          }}
+        >
+          {paper.title || 'Delhi Public School'}
+        </h1>
+        <p
+          style={{
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '24px',
+            fontWeight: 600,
+            lineHeight: '160%',
+            letterSpacing: '-0.04em',
+            color: '#333',
+          }}
+        >
+          Subject: {paper.subject}
         </p>
-
-        {/* Student info */}
-        <div className="text-sm text-gray-700 space-y-1.5 border-b border-gray-200 pb-5">
-          <p>Name: <span className="inline-block border-b border-gray-500 w-44 align-bottom" /></p>
-          <p>Roll Number: <span className="inline-block border-b border-gray-500 w-36 align-bottom" /></p>
-          <p>Class: {paper.grade} &nbsp;&nbsp; Section: <span className="inline-block border-b border-gray-500 w-16 align-bottom" /></p>
-        </div>
-
-        {/* Sections */}
-        {paper.sections.map((sec) => (
-          <div key={sec.id} className="space-y-3">
-            <div>
-              <h2 className="font-bold text-sm text-gray-900 text-center uppercase tracking-wide mt-2">{sec.title}</h2>
-              <p className="text-xs text-gray-500 italic text-center">{sec.instruction}</p>
-            </div>
-            <div className="space-y-2">
-              {sec.questions.map((q) => <QuestionLine key={q.id} question={q} />)}
-            </div>
-          </div>
-        ))}
-
-        {/* End */}
-        <div className="border-t-2 border-gray-900 pt-4 text-center">
-          <p className="text-sm font-bold text-gray-800">End of Question Paper</p>
-        </div>
-
-        {/* Answer Key */}
-        {paper.sections.some((s) => s.questions.some((q) => q.answer)) && (
-          <div className="border-t-2 border-gray-900 pt-5 space-y-3">
-            <h2 className="font-bold text-sm text-gray-900">Answer Key:</h2>
-            {paper.sections.map((sec) =>
-              sec.questions.filter((q) => q.answer).map((q) => (
-                <p key={q.id} className="text-sm text-gray-700">
-                  <span className="font-semibold">{q.number}.</span> {q.answer}
-                </p>
-              ))
-            )}
-          </div>
-        )}
+        <p
+          style={{
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '24px',
+            fontWeight: 600,
+            lineHeight: '160%',
+            letterSpacing: '-0.04em',
+            color: '#333',
+          }}
+        >
+          Class: {paper.grade}
+        </p>
       </div>
+
+      {/* Time & Marks row — Figma: Inter SemiBold(600), 18px, 160%, -4% LS */}
+      <div
+        className="flex items-center justify-between"
+        style={{
+          fontFamily: 'Inter, sans-serif',
+          fontSize: '18px',
+          fontWeight: 600,
+          lineHeight: '160%',
+          letterSpacing: '-0.04em',
+          color: '#555',
+          marginTop: '12px',
+        }}
+      >
+        <p>Time Allowed: {paper.duration || '45'} minutes</p>
+        <p>Maximum Marks: {paper.totalMarks}</p>
+      </div>
+
+      {/* Instruction — Figma: Fill(996) x Hug(29), space-between */}
+      <p
+        style={{
+          fontFamily: 'Inter, sans-serif',
+          fontSize: '14px',
+          fontWeight: 400,
+          fontStyle: 'italic',
+          color: '#555',
+        }}
+      >All questions are compulsory unless stated otherwise.</p>
+
+      {/* Student info — Figma: Fill(996) x Hug(87) */}
+      <div
+        className="flex flex-col"
+        style={{
+          fontFamily: 'Inter, sans-serif',
+          fontSize: '18px',
+          fontWeight: 600,
+          lineHeight: '160%',
+          letterSpacing: '-0.04em',
+          color: '#333',
+          gap: '4px',
+        }}
+      >
+        <p>Name: <span className="inline-block border-b border-gray-400 w-56 align-bottom" /></p>
+        <p>Roll Number: <span className="inline-block border-b border-gray-400 w-48 align-bottom" /></p>
+        <p>Class: {paper.grade} &nbsp;&nbsp; Section: <span className="inline-block border-b border-gray-400 w-24 align-bottom" /></p>
+      </div>
+
+      {/* Sections */}
+      {paper.sections.map((sec) => (
+        <div key={sec.id} className="flex flex-col" style={{ gap: '12px' }}>
+          <div className="text-center">
+            <h2
+              style={{
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: 700,
+                fontSize: '16px',
+                lineHeight: '240%',
+                textTransform: 'uppercase' as const,
+                letterSpacing: '0.05em',
+                color: '#111',
+              }}
+            >{sec.title}</h2>
+            <p
+              style={{
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '13px',
+                fontStyle: 'italic',
+                color: '#777',
+              }}
+            >{sec.instruction}</p>
+          </div>
+          <div className="flex flex-col" style={{ gap: '8px' }}>
+            {sec.questions.map((q) => <QuestionLine key={q.id} question={q} />)}
+          </div>
+        </div>
+      ))}
+
+      {/* End */}
+      <div className="text-center" style={{ borderTop: '2px solid #111', paddingTop: '16px' }}>
+        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', fontWeight: 700, color: '#333' }}>End of Question Paper</p>
+      </div>
+
+      {/* Answer Key */}
+      {paper.sections.some((s) => s.questions.some((q) => q.answer)) && (
+        <div className="flex flex-col" style={{ borderTop: '2px solid #111', paddingTop: '20px', gap: '8px' }}>
+          <h2 style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '16px', lineHeight: '240%', color: '#111' }}>Answer Key:</h2>
+          {paper.sections.map((sec) =>
+            sec.questions.filter((q) => q.answer).map((q) => (
+              <p
+                key={q.id}
+                style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '16px',
+                  fontWeight: 400,
+                  lineHeight: '240%',
+                  letterSpacing: '-0.04em',
+                  color: '#444'
+                }}
+              >
+                <span style={{ fontWeight: 600 }}>{q.number}.</span> {q.answer}
+              </p>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -303,18 +421,27 @@ function PaperDocument({ paper }: { paper: QuestionPaper }) {
 function QuestionLine({ question }: { question: Question }) {
   const diff = DIFF[question.difficulty] || question.difficulty;
   return (
-    <div className="text-sm text-gray-800">
+    <div
+      style={{
+        fontFamily: 'Inter, sans-serif',
+        fontSize: '16px',
+        fontWeight: 400,
+        lineHeight: '240%',
+        letterSpacing: '-0.04em',
+        color: '#111',
+      }}
+    >
       <p>
-        <span className="font-medium">{question.number}. </span>
-        <span className="text-gray-500">[{diff}]</span>
+        <span style={{ fontWeight: 700 }}>{question.number}. </span>
+        <span style={{ color: '#555' }}>[{diff}]</span>
         {' '}{question.text}
-        <span className="text-gray-500"> [{question.marks} Marks]</span>
+        <span style={{ color: '#555' }}> [{question.marks} Marks]</span>
       </p>
       {question.options && question.options.length > 0 && (
-        <div className="mt-1.5 ml-4 grid grid-cols-2 gap-1">
+        <div className="ml-6 grid grid-cols-2 gap-x-8 gap-y-1">
           {question.options.map((opt, idx) => (
-            <span key={idx} className="text-sm text-gray-600">
-              <span className="font-medium">{String.fromCharCode(65 + idx)}.</span> {opt}
+            <span key={idx}>
+              <span style={{ fontWeight: 700 }}>{String.fromCharCode(65 + idx)}.</span> {opt}
             </span>
           ))}
         </div>
