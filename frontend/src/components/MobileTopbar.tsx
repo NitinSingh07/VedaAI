@@ -7,7 +7,7 @@ export default function MobileTopbar() {
   return (
     <div
       className="fixed top-0 left-0 right-0 z-40 md:hidden"
-      style={{ padding: '12px 10px 10px' }}
+      style={{ padding: '18px 20px' }}
     >
       <div
         className="flex items-center justify-between"

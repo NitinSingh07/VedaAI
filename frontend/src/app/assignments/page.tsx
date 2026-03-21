@@ -220,89 +220,105 @@ function FilledState({
   onSearch: (s: string) => void;
   onDelete: (id: string) => void;
 }) {
+  const router = useRouter();
   return (
-    <div className="px-4 md:px-6 pt-4 flex flex-col gap-[10px]">
-      {/* Header — Figma: Fill(1100) x Hug(50), px-2, gap-4 */}
-      <div className="flex items-center gap-3 px-2">
+    /* Mobile: px-[10px], gap:24px | Desktop: px-6, gap:10px */
+    <div className="px-[10px] md:px-6 pt-2 md:pt-4 flex flex-col gap-6 md:gap-[10px]">
+
+      {/* Mobile sub-header: ← Assignments (48px, space-between) */}
+      <div
+        className="flex md:hidden items-center justify-between"
+        style={{ height: 48 }}
+      >
+        <button
+          onClick={() => router.back()}
+          className="w-9 h-9 flex items-center justify-center rounded-full bg-white"
+          style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.10)' }}
+        >
+          <svg width="16" height="13" viewBox="0 0 18 15" fill="none">
+            <path d="M17 7.5H1M1 7.5L7.5 1M1 7.5L7.5 14" stroke="#303030" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+        <span style={{ fontSize: 16, fontWeight: 600, color: '#303030', letterSpacing: '-0.04em' }}>
+          Assignments
+        </span>
+        <div className="w-9" />{/* spacer to center title */}
+      </div>
+
+      {/* Desktop header: green dot + Assignments + subtitle */}
+      <div className="hidden md:flex items-center gap-3 px-2">
         <div
           className="mt-1 flex-shrink-0 rounded-full"
-          style={{
-            width: '12px',
-            height: '12px',
-            backgroundColor: '#4BC26D',
-            border: '4px solid rgba(75, 194, 109, 0.4)',
-          }}
+          style={{ width: 12, height: 12, backgroundColor: '#4BC26D', border: '4px solid rgba(75,194,109,0.4)' }}
         />
         <div>
-          <h1
-            className="font-bold text-[#303030]"
-            style={{
-              fontFamily: 'var(--font-bricolage, inherit)',
-              fontSize: '20px',
-              fontWeight: 700,
-              lineHeight: '140%',
-              letterSpacing: '-0.04em',
-            }}
-          >Assignments</h1>
-          <p
-            className="text-[#5E5E5E] mt-0.5"
-            style={{
-              fontFamily: 'var(--font-bricolage, inherit)',
-              fontSize: '14px',
-              fontWeight: 400,
-              lineHeight: '140%',
-              letterSpacing: '-0.04em',
-            }}
-          >Manage and create assignments for your classes.</p>
+          <h1 style={{ fontSize: 20, fontWeight: 700, color: '#303030', lineHeight: '140%', letterSpacing: '-0.04em' }}>
+            Assignments
+          </h1>
+          <p style={{ fontSize: 14, fontWeight: 400, color: '#5E5E5E', lineHeight: '140%', letterSpacing: '-0.04em' }}>
+            Manage and create assignments for your classes.
+          </p>
         </div>
       </div>
 
-      {/* Filter/Search Row — Figma: h=64px, rounded-[20px], px-4, bg-white, justify-between */}
+      {/* Filter/Search Row — Mobile: 64px, 16px radius | Desktop: 64px, 20px radius */}
       <div
-        className="flex items-center justify-between bg-white h-[64px] rounded-[20px]"
-        style={{ border: '1px solid rgba(0,0,0,0.05)', paddingLeft: '16px', paddingRight: '16px' }}
+        className="flex items-center justify-between bg-white"
+        style={{
+          height: 64,
+          borderRadius: 16,
+          border: '1px solid rgba(0,0,0,0.05)',
+          paddingLeft: 16,
+          paddingRight: 16,
+        }}
       >
-        {/* Filter By — Figma: Hug(77px) x Hug(20px), gap=24px */}
-        <button
-          className="flex items-center gap-2 text-[14px] font-medium text-[#5E5E5E] hover:opacity-70 transition-opacity"
-          style={{ fontFamily: 'var(--font-bricolage, inherit)' }}
-        >
+        <button className="flex items-center gap-2 text-[14px] font-medium text-[#5E5E5E] hover:opacity-70 transition-opacity">
           <SlidersHorizontal className="w-4 h-4 opacity-50" />
-          Filter By
+          <span className="hidden sm:inline">Filter By</span>
+          <span className="sm:hidden">Filter</span>
         </button>
 
-        {/* Search — Figma: w=380px, h=44px, radius=100px, border=1px #000 20%, padding=11px 16px */}
-        <div className="relative w-[180px] md:w-[380px]">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A9A9A9]" />
+        <div className="relative" style={{ width: 'clamp(140px, 50%, 380px)' }}>
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A9A9A9]" />
           <input
             type="text"
-            placeholder="Search Assignment"
+            placeholder="Search Name"
             value={search}
             onChange={(e) => onSearch(e.target.value)}
-            className="w-full h-[44px] rounded-[100px] pl-11 pr-4 text-[14px] text-[#303030] placeholder-[#A9A9A9] focus:outline-none transition-all font-medium bg-white"
-            style={{
-              border: '1px solid rgba(0,0,0,0.2)',
-              fontFamily: 'var(--font-bricolage, inherit)',
-            }}
+            className="w-full h-[44px] rounded-full pl-10 pr-4 text-[14px] text-[#303030] placeholder-[#A9A9A9] focus:outline-none bg-white"
+            style={{ border: '1px solid rgba(0,0,0,0.12)' }}
           />
         </div>
       </div>
 
-      {/* Cards Grid */}
+      {/* Cards — Mobile: single col, gap:24px | Desktop: 2-col grid, gap:16px */}
       {assignments.length === 0 ? (
-        <div className="text-center py-12 text-sm text-gray-400">No assignments match your search.</div>
+        <div className="text-center py-12 text-sm text-[#A9A9A9]">No assignments match your search.</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
-          {assignments.map((a) => (
-            <AssignmentCard key={a._id} assignment={a} onDelete={onDelete} />
-          ))}
-        </div>
+        <>
+          {/* Mobile: vertical list */}
+          <div className="flex flex-col md:hidden gap-6">
+            {assignments.map((a) => (
+              <AssignmentCard key={a._id} assignment={a} onDelete={onDelete} mobile />
+            ))}
+          </div>
+          {/* Desktop: 2-col grid */}
+          <div className="hidden md:grid grid-cols-2 gap-[16px]">
+            {assignments.map((a) => (
+              <AssignmentCard key={a._id} assignment={a} onDelete={onDelete} />
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
 }
 
-function AssignmentCard({ assignment: a, onDelete }: { assignment: Assignment; onDelete: (id: string) => void }) {
+function AssignmentCard({ assignment: a, onDelete, mobile = false }: {
+  assignment: Assignment;
+  onDelete: (id: string) => void;
+  mobile?: boolean;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -318,14 +334,20 @@ function AssignmentCard({ assignment: a, onDelete }: { assignment: Assignment; o
   const assignedDate = new Date(a.createdAt).toLocaleDateString('en-GB').replace(/\//g, '-');
   const dueDate = new Date(a.dueDate).toLocaleDateString('en-GB').replace(/\//g, '-');
 
-  {/* Card — Figma: w=542px, h=162px, justify=space-between, padding=8+16=24px, border-radius=S(20) */}
   return (
     <div
       className="bg-white flex flex-col justify-between relative"
-      style={{
-        borderRadius: '20px',
-        padding: '24px',
-        minHeight: '162px',
+      style={mobile ? {
+        /* Mobile — Figma: Fill(373px) × Hug(116px), radius XS-16, gap:12px, padding:16px, no shadow */
+        borderRadius: 16,
+        padding: 16,
+        minHeight: 116,
+        gap: 12,
+      } : {
+        /* Desktop — Figma: 542×162, radius 20px, padding 24px, shadow */
+        borderRadius: 20,
+        padding: 24,
+        minHeight: 162,
         boxShadow: '0px 32px 48px rgba(0,0,0,0.05), 0px 16px 48px rgba(0,0,0,0.12)',
         border: '1px solid rgba(0,0,0,0.05)',
       }}

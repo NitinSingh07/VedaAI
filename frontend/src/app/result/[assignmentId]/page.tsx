@@ -5,6 +5,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { Download, RefreshCw, ArrowLeft, Loader2, AlertTriangle } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
 import Topbar from '@/components/Topbar';
+import MobileTopbar from '@/components/MobileTopbar';
+import MobileBottomNav from '@/components/MobileBottomNav';
 import { useAssignmentStore } from '@/store/useAssignmentStore';
 import { useWebSocket } from '@/hooks/useWebSocket';
 import { QuestionPaper, Question } from '@/types';
@@ -131,9 +133,11 @@ export default function ResultPage() {
   /* ── Loading ── */
   if (loading) return (
     <div className="flex min-h-screen bg-[#F0F0F5]">
-      <Sidebar />
-      <div className="ml-[328px] flex-1 flex flex-col">
-        <Topbar title="Question Paper" showBack />
+      <div className="hidden md:block"><Sidebar /></div>
+      <MobileTopbar />
+      <MobileBottomNav />
+      <div className="flex-1 flex flex-col md:ml-[328px]">
+        <div className="hidden md:block"><Topbar title="Question Paper" showBack /></div>
         <main className="flex-1 pt-20 flex items-center justify-center">
           <div className="text-center space-y-3">
             <Loader2 className="w-8 h-8 text-[#E8472A] animate-spin mx-auto" />
@@ -147,11 +151,13 @@ export default function ResultPage() {
   /* ── Error ── */
   if (error && !paper) return (
     <div className="flex min-h-screen bg-[#F0F0F5]">
-      <Sidebar />
-      <div className="ml-[328px] flex-1 flex flex-col">
-        <Topbar title="Question Paper" showBack />
+      <div className="hidden md:block"><Sidebar /></div>
+      <MobileTopbar />
+      <MobileBottomNav />
+      <div className="flex-1 flex flex-col md:ml-[328px]">
+        <div className="hidden md:block"><Topbar title="Question Paper" showBack /></div>
         <main className="flex-1 pt-20 flex items-center justify-center">
-          <div className="text-center space-y-4 max-w-sm">
+          <div className="text-center space-y-4 max-w-sm px-6">
             <AlertTriangle className="w-10 h-10 text-amber-500 mx-auto" />
             <p className="text-sm font-medium text-gray-700">{error}</p>
             <div className="flex gap-3 justify-center">
@@ -173,93 +179,138 @@ export default function ResultPage() {
   /* ── Main ── */
   return (
     <div className="flex min-h-screen bg-[#F0F0F5]">
-      <Sidebar />
-      <div className="ml-[328px] flex-1 flex flex-col min-h-screen">
-        <Topbar title="Question Paper" showBack />
+      {/* Desktop sidebar */}
+      <div className="hidden md:block"><Sidebar /></div>
 
-        <main className="flex-1 pt-20 pb-12">
-          {/* Outer dark container — Figma: w=1100, radius=32, padding=20, gap=12, bg=#5E5E5E */}
+      {/* Mobile topbar + bottom nav */}
+      <MobileTopbar />
+      <MobileBottomNav />
+
+      <div className="flex-1 flex flex-col min-h-screen md:ml-[328px]">
+        {/* Desktop topbar */}
+        <div className="hidden md:block">
+          <Topbar title="Question Paper" showBack />
+        </div>
+
+        {/* ══ DESKTOP ══ */}
+        <main className="hidden md:block flex-1 pt-20 pb-12">
           <div
             className="mx-auto flex flex-col"
-            style={{
-              maxWidth: '1100px',
-              borderRadius: '32px',
-              padding: '20px',
-              gap: '12px',
-              backgroundColor: '#5E5E5E',
-            }}
+            style={{ maxWidth: '1100px', borderRadius: '32px', padding: '20px', gap: '12px', backgroundColor: '#5E5E5E' }}
           >
-            {/* Dark message bar — Figma: Fill(1060), radius=32, border-top=4px, padding=24/32, gap=24, bg=#181818 80% */}
-            <div
-              className="flex flex-col"
-              style={{
-                borderRadius: '32px',
-                borderTop: '4px solid rgba(255,255,255,0.15)',
-                padding: '24px 32px',
-                gap: '24px',
-                backgroundColor: 'rgba(24, 24, 24, 0.80)',
-              }}
-            >
-              {/* Message text — Figma: Fill(996), gap=16 */}
-              {/* AI Text — Figma: Bricolage, 700 Bold, 20px, 140% line-height, -4% tracking */}
+            <div className="flex flex-col"
+              style={{ borderRadius: '32px', borderTop: '4px solid rgba(255,255,255,0.15)', padding: '24px 32px', gap: '24px', backgroundColor: 'rgba(24,24,24,0.80)' }}>
               <div className="flex flex-col" style={{ gap: '16px' }}>
-                <p
-                  className="flex-1 text-white"
-                  style={{
-                    fontFamily: 'var(--font-bricolage, inherit)',
-                    fontSize: '20px',
-                    fontWeight: 700,
-                    lineHeight: '140%',
-                    letterSpacing: '-0.04em',
-                  }}
-                >
-                  {`Certainly, Lakshya! Here are customized Question Paper for your CBSE Grade ${paper?.grade} ${paper?.subject} classes on the NCERT chapters:`}
+                <p className="flex-1 text-white"
+                  style={{ fontFamily: 'var(--font-bricolage, inherit)', fontSize: '20px', fontWeight: 700, lineHeight: '140%', letterSpacing: '-0.04em' }}>
+                  {`Certainly! Here are customized Question Paper for your CBSE Grade ${paper?.grade} ${paper?.subject} classes on the NCERT chapters:`}
                 </p>
-
-                {/* Action buttons row — Figma: Hug(200) x Hug(44), gap=16 */}
                 <div className="flex items-center" style={{ gap: '16px' }}>
                   {generationStatus === 'processing' && (
                     <span className="flex items-center gap-1.5 text-xs text-orange-300 font-medium">
-                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                      Regenerating...
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />Regenerating...
                     </span>
                   )}
-                  <button
-                    onClick={handleDownloadPDF}
+                  <button onClick={handleDownloadPDF}
                     className="flex items-center justify-center bg-white text-[#111] hover:bg-white/90 transition-colors"
-                    style={{
-                      width: '200px',
-                      height: '44px',
-                      borderRadius: '100px',
-                      gap: '8px',
-                      fontSize: '14px',
-                      fontWeight: 600,
-                      fontFamily: 'var(--font-inter, inherit)',
-                    }}
-                  >
-                    <Download className="w-4 h-4" />
-                    Download as PDF
+                    style={{ width: '200px', height: '44px', borderRadius: '100px', gap: '8px', fontSize: '14px', fontWeight: 600 }}>
+                    <Download className="w-4 h-4" />Download as PDF
                   </button>
                 </div>
               </div>
             </div>
-
-            {/* Paper document — Figma: Fill(1060), radius=L=32, border-top=4px, padding=32, gap=24, bg=white */}
-            <div
-              className="bg-white overflow-hidden"
-              style={{
-                borderRadius: '32px',
-                borderTop: '4px solid #e5e5e5',
-                padding: '32px',
-                display: 'flex',
-                flexDirection: 'column' as const,
-                gap: '24px',
-              }}
-            >
+            <div className="bg-white overflow-hidden"
+              style={{ borderRadius: '32px', borderTop: '4px solid #e5e5e5', padding: '32px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
               {paper && <PaperDocument paper={paper} />}
             </div>
           </div>
         </main>
+
+        {/* ══ MOBILE ══ */}
+        {/* Frame 1618872221: Fixed(373px), Top:190px, Left:10px, radius XL-40, padding 9, gap 10, bg white */}
+        <div
+          className="md:hidden"
+          style={{
+            paddingTop: 100,
+            paddingBottom: 155,
+            paddingLeft: 10,
+            paddingRight: 10,
+          }}
+        >
+          <div style={{
+            background: '#FFFFFF',
+            borderRadius: 40,
+            padding: 9,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 10,
+          }}>
+            {/* AI response bubble: radius 32, border-top 4px, padding T:24 R:16 B:24 L:16, gap 12 */}
+            <div style={{
+              borderRadius: 32,
+              borderTop: '4px solid rgba(255,255,255,0.12)',
+              background: 'rgba(24,24,24,0.92)',
+              padding: '24px 16px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12,
+              boxShadow: '0 32px 48px rgba(0,0,0,0.20), 0 16px 48px rgba(0,0,0,0.12)',
+            }}>
+              {/* AI text: Frame 1984077288 — Fill(323px), Hug(51px), Vertical, Gap 12 */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <p style={{
+                  fontFamily: 'var(--font-bricolage, inherit)',
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: '#FFFFFF',
+                  letterSpacing: '-0.04em',
+                  lineHeight: '140%',
+                }}>
+                  {`Certainly! Here are customized Question Paper for your CBSE Grade ${paper?.grade} ${paper?.subject} classes on the NCERT chapters:`}
+                </p>
+
+                {/* Download button: Frame 1984077321 — 36×36 Hug, Horizontal, Gap 8 */}
+                <button
+                  onClick={handleDownloadPDF}
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: 9999,
+                    background: 'rgba(255,255,255,0.12)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Download style={{ width: 16, height: 16, color: '#FFFFFF' }} />
+                </button>
+
+                {generationStatus === 'processing' && (
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#FCD34D', fontWeight: 500 }}>
+                    <Loader2 style={{ width: 12, height: 12 }} className="animate-spin" />
+                    Regenerating...
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Paper document card */}
+            <div style={{
+              background: '#FFFFFF',
+              borderRadius: 32,
+              borderTop: '4px solid #EBEBEB',
+              padding: 16,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 16,
+            }}>
+              {paper && <PaperDocumentMobile paper={paper} />}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -411,6 +462,101 @@ function PaperDocument({ paper }: { paper: QuestionPaper }) {
               </p>
             ))
           )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── Mobile Paper Document ── */
+function PaperDocumentMobile({ paper }: { paper: QuestionPaper }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      {/* Header */}
+      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <h1 style={{ fontFamily: 'var(--font-bricolage, inherit)', fontSize: 18, fontWeight: 700, letterSpacing: '-0.04em', color: '#111', lineHeight: '140%' }}>
+          {paper.title || 'Question Paper'}
+        </h1>
+        <p style={{ fontFamily: 'var(--font-bricolage, inherit)', fontSize: 13, fontWeight: 500, color: '#555', letterSpacing: '-0.04em' }}>
+          Subject: {paper.subject} &nbsp; Class: {paper.grade}
+        </p>
+      </div>
+
+      {/* Meta row */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, fontWeight: 500, color: '#555', letterSpacing: '-0.04em' }}>
+        <span>Time Allowed: {paper.duration || '45'} minutes</span>
+        <span>Maximum Marks: {paper.totalMarks}</span>
+      </div>
+
+      {/* Instructions */}
+      <p style={{ fontFamily: 'var(--font-bricolage, inherit)', fontSize: 12, fontStyle: 'italic', color: '#777' }}>
+        All questions are compulsory unless stated otherwise.
+      </p>
+
+      {/* Student info */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 12, fontWeight: 500, color: '#333', borderBottom: '1px solid #EBEBEB', paddingBottom: 12 }}>
+        <p>Name: <span style={{ display: 'inline-block', borderBottom: '1px solid #999', width: 120, marginLeft: 4 }} /></p>
+        <p>Roll Number: <span style={{ display: 'inline-block', borderBottom: '1px solid #999', width: 100, marginLeft: 4 }} /></p>
+        <p>Class: {paper.grade} &nbsp; Section: <span style={{ display: 'inline-block', borderBottom: '1px solid #999', width: 60, marginLeft: 4 }} /></p>
+      </div>
+
+      {/* Sections */}
+      {paper.sections.map((sec) => (
+        <div key={sec.id} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ textAlign: 'center' }}>
+            <h2 style={{ fontFamily: 'var(--font-bricolage, inherit)', fontWeight: 700, fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.04em', color: '#111' }}>
+              {sec.title}
+            </h2>
+            <p style={{ fontFamily: 'var(--font-bricolage, inherit)', fontSize: 11, fontStyle: 'italic', color: '#777', marginTop: 2 }}>
+              {sec.instruction}
+            </p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {sec.questions.map((q) => <QuestionLineMobile key={q.id} question={q} />)}
+          </div>
+        </div>
+      ))}
+
+      {/* End */}
+      <div style={{ textAlign: 'center', borderTop: '1px solid #EBEBEB', paddingTop: 12 }}>
+        <p style={{ fontFamily: 'var(--font-bricolage, inherit)', fontSize: 12, fontWeight: 700, color: '#333' }}>End of Question Paper</p>
+      </div>
+
+      {/* Answer Key */}
+      {paper.sections.some((s) => s.questions.some((q) => q.answer)) && (
+        <div style={{ display: 'flex', flexDirection: 'column', borderTop: '1px solid #EBEBEB', paddingTop: 12, gap: 6 }}>
+          <h2 style={{ fontFamily: 'var(--font-bricolage, inherit)', fontWeight: 700, fontSize: 13, color: '#111' }}>Answer Key:</h2>
+          {paper.sections.map((sec) =>
+            sec.questions.filter((q) => q.answer).map((q) => (
+              <p key={q.id} style={{ fontFamily: 'var(--font-bricolage, inherit)', fontSize: 12, color: '#444', lineHeight: '160%' }}>
+                <strong>{q.number}.</strong> {q.answer}
+              </p>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── Mobile Question line ── */
+function QuestionLineMobile({ question }: { question: Question }) {
+  const diff = DIFF[question.difficulty] || question.difficulty;
+  return (
+    <div style={{ fontFamily: 'var(--font-bricolage, inherit)', fontSize: 12, lineHeight: '160%', color: '#111' }}>
+      <p>
+        <span style={{ fontWeight: 700 }}>{question.number}. </span>
+        <span style={{ color: '#777' }}>[{diff}]</span>
+        {' '}{question.text}
+        <span style={{ color: '#777' }}> [{question.marks} Marks]</span>
+      </p>
+      {question.options && question.options.length > 0 && (
+        <div style={{ marginLeft: 12, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px 8px', marginTop: 2 }}>
+          {question.options.map((opt, idx) => (
+            <span key={idx}>
+              <span style={{ fontWeight: 700 }}>{String.fromCharCode(65 + idx)}.</span> {opt}
+            </span>
+          ))}
         </div>
       )}
     </div>
