@@ -12,11 +12,11 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { href: '/assignments', icon: Home,    label: 'Home',               activePatterns: ['/home', '/'] },
-  { href: '/groups',      icon: Users,   label: 'My Groups',          activePatterns: ['/groups'] },
-  { href: '/assignments', icon: BookOpen,label: 'Assignments',        activePatterns: ['/assignments', '/result', '/create'] },
-  { href: '/toolkit',     icon: Sparkles,label: "AI Teacher's Toolkit", activePatterns: ['/toolkit'] },
-  { href: '/library',     icon: Library, label: 'My Library',         activePatterns: ['/library'] },
+  { href: '/assignments', icon: Home, label: 'Home', activePatterns: ['/home', '/'] },
+  { href: '/groups', icon: Users, label: 'My Groups', activePatterns: ['/groups'] },
+  { href: '/assignments', icon: BookOpen, label: 'Assignments', activePatterns: ['/assignments', '/result', '/create'] },
+  { href: '/toolkit', icon: Sparkles, label: "AI Teacher's Toolkit", activePatterns: ['/toolkit'] },
+  { href: '/library', icon: Library, label: 'My Library', activePatterns: ['/library'] },
 ];
 
 interface SidebarProps {

@@ -135,7 +135,7 @@ export default function ResultPage() {
     <div className="flex min-h-screen bg-[#F0F0F5]">
       <div className="hidden md:block"><Sidebar /></div>
       <MobileTopbar />
-      <MobileBottomNav />
+      <MobileBottomNav showFab={false} />
       <div className="flex-1 flex flex-col md:ml-[328px]">
         <div className="hidden md:block"><Topbar title="Question Paper" showBack /></div>
         <main className="flex-1 pt-20 flex items-center justify-center">
@@ -153,7 +153,7 @@ export default function ResultPage() {
     <div className="flex min-h-screen bg-[#F0F0F5]">
       <div className="hidden md:block"><Sidebar /></div>
       <MobileTopbar />
-      <MobileBottomNav />
+      <MobileBottomNav showFab={false} />
       <div className="flex-1 flex flex-col md:ml-[328px]">
         <div className="hidden md:block"><Topbar title="Question Paper" showBack /></div>
         <main className="flex-1 pt-20 flex items-center justify-center">
@@ -184,7 +184,7 @@ export default function ResultPage() {
 
       {/* Mobile topbar + bottom nav */}
       <MobileTopbar />
-      <MobileBottomNav />
+      <MobileBottomNav showFab={false} />
 
       <div className="flex-1 flex flex-col min-h-screen md:ml-[328px]">
         {/* Desktop topbar */}
@@ -297,15 +297,14 @@ export default function ResultPage() {
               </div>
             </div>
 
-            {/* Paper document card */}
+            {/* Paper document card — Frame 1984077318: radius 32, padding T:24 R:16 B:24 L:16, gap 24, bg #F6F6F6 */}
             <div style={{
-              background: '#FFFFFF',
+              background: '#F6F6F6',
               borderRadius: 32,
-              borderTop: '4px solid #EBEBEB',
-              padding: 16,
+              padding: '24px 16px',
               display: 'flex',
               flexDirection: 'column',
-              gap: 16,
+              gap: 24,
             }}>
               {paper && <PaperDocumentMobile paper={paper} />}
             </div>
@@ -471,43 +470,47 @@ function PaperDocument({ paper }: { paper: QuestionPaper }) {
 /* ── Mobile Paper Document ── */
 function PaperDocumentMobile({ paper }: { paper: QuestionPaper }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      {/* Header */}
-      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 4 }}>
-        <h1 style={{ fontFamily: 'var(--font-bricolage, inherit)', fontSize: 18, fontWeight: 700, letterSpacing: '-0.04em', color: '#111', lineHeight: '140%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+
+      {/* Header — 323×124 Hug: Inter 700, 20px, 130% LH, -4% LS, Center */}
+      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <h1 style={{ fontFamily: 'Inter, sans-serif', fontSize: 20, fontWeight: 700, letterSpacing: '-0.04em', color: '#111', lineHeight: '130%' }}>
           {paper.title || 'Question Paper'}
         </h1>
-        <p style={{ fontFamily: 'var(--font-bricolage, inherit)', fontSize: 13, fontWeight: 500, color: '#555', letterSpacing: '-0.04em' }}>
-          Subject: {paper.subject} &nbsp; Class: {paper.grade}
+        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 600, color: '#333', letterSpacing: '-0.04em', lineHeight: '130%' }}>
+          Subject: {paper.subject}
+        </p>
+        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 600, color: '#333', letterSpacing: '-0.04em', lineHeight: '130%' }}>
+          Class: {paper.grade}
         </p>
       </div>
 
-      {/* Meta row */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, fontWeight: 500, color: '#555', letterSpacing: '-0.04em' }}>
-        <span>Time Allowed: {paper.duration || '45'} minutes</span>
-        <span>Maximum Marks: {paper.totalMarks}</span>
+      {/* Time & Marks — 323×54 Hug, Vertical, Gap 10 */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, fontFamily: 'Inter, sans-serif', fontSize: 13, fontWeight: 500, color: '#555', letterSpacing: '-0.04em' }}>
+        <p>Time Allowed: {paper.duration || '45'} minutes</p>
+        <p>Maximum Marks: {paper.totalMarks}</p>
       </div>
 
       {/* Instructions */}
-      <p style={{ fontFamily: 'var(--font-bricolage, inherit)', fontSize: 12, fontStyle: 'italic', color: '#777' }}>
+      <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 12, fontStyle: 'italic', color: '#555' }}>
         All questions are compulsory unless stated otherwise.
       </p>
 
       {/* Student info */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 12, fontWeight: 500, color: '#333', borderBottom: '1px solid #EBEBEB', paddingBottom: 12 }}>
-        <p>Name: <span style={{ display: 'inline-block', borderBottom: '1px solid #999', width: 120, marginLeft: 4 }} /></p>
-        <p>Roll Number: <span style={{ display: 'inline-block', borderBottom: '1px solid #999', width: 100, marginLeft: 4 }} /></p>
-        <p>Class: {paper.grade} &nbsp; Section: <span style={{ display: 'inline-block', borderBottom: '1px solid #999', width: 60, marginLeft: 4 }} /></p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, fontFamily: 'Inter, sans-serif', fontSize: 13, fontWeight: 500, color: '#333', lineHeight: '160%' }}>
+        <p>Name: <span style={{ display: 'inline-block', borderBottom: '1px solid #999', width: 110, marginLeft: 4 }} /></p>
+        <p>Roll Number: <span style={{ display: 'inline-block', borderBottom: '1px solid #999', width: 90, marginLeft: 4 }} /></p>
+        <p>Class: {paper.grade} &nbsp; Section: <span style={{ display: 'inline-block', borderBottom: '1px solid #999', width: 56, marginLeft: 4 }} /></p>
       </div>
 
       {/* Sections */}
       {paper.sections.map((sec) => (
         <div key={sec.id} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div style={{ textAlign: 'center' }}>
-            <h2 style={{ fontFamily: 'var(--font-bricolage, inherit)', fontWeight: 700, fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.04em', color: '#111' }}>
+            <h2 style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.04em', color: '#111' }}>
               {sec.title}
             </h2>
-            <p style={{ fontFamily: 'var(--font-bricolage, inherit)', fontSize: 11, fontStyle: 'italic', color: '#777', marginTop: 2 }}>
+            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 12, fontStyle: 'italic', color: '#777', marginTop: 3 }}>
               {sec.instruction}
             </p>
           </div>
@@ -518,17 +521,17 @@ function PaperDocumentMobile({ paper }: { paper: QuestionPaper }) {
       ))}
 
       {/* End */}
-      <div style={{ textAlign: 'center', borderTop: '1px solid #EBEBEB', paddingTop: 12 }}>
-        <p style={{ fontFamily: 'var(--font-bricolage, inherit)', fontSize: 12, fontWeight: 700, color: '#333' }}>End of Question Paper</p>
+      <div style={{ textAlign: 'center', borderTop: '1px solid #DEDEDE', paddingTop: 14 }}>
+        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 12, fontWeight: 700, color: '#333' }}>End of Question Paper</p>
       </div>
 
       {/* Answer Key */}
       {paper.sections.some((s) => s.questions.some((q) => q.answer)) && (
-        <div style={{ display: 'flex', flexDirection: 'column', borderTop: '1px solid #EBEBEB', paddingTop: 12, gap: 6 }}>
-          <h2 style={{ fontFamily: 'var(--font-bricolage, inherit)', fontWeight: 700, fontSize: 13, color: '#111' }}>Answer Key:</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', borderTop: '1px solid #DEDEDE', paddingTop: 14, gap: 8 }}>
+          <h2 style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: 13, color: '#111' }}>Answer Key:</h2>
           {paper.sections.map((sec) =>
             sec.questions.filter((q) => q.answer).map((q) => (
-              <p key={q.id} style={{ fontFamily: 'var(--font-bricolage, inherit)', fontSize: 12, color: '#444', lineHeight: '160%' }}>
+              <p key={q.id} style={{ fontFamily: 'Inter, sans-serif', fontSize: 12, color: '#444', lineHeight: '160%' }}>
                 <strong>{q.number}.</strong> {q.answer}
               </p>
             ))

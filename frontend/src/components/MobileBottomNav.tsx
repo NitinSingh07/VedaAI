@@ -11,7 +11,7 @@ const NAV_ITEMS = [
   { href: '/toolkit',     label: 'AI Toolkit',   icon: Sparkles },
 ];
 
-export default function MobileBottomNav() {
+export default function MobileBottomNav({ showFab = true }: { showFab?: boolean }) {
   const pathname = usePathname();
 
   return (
@@ -20,19 +20,21 @@ export default function MobileBottomNav() {
       style={{ padding: '0 10px 10px' }}
     >
       {/* FAB — white circle, orange + icon, right-aligned */}
-      <div className="flex justify-end" style={{ marginBottom: 13 }}>
-        <Link
-          href="/create"
-          className="flex items-center justify-center bg-white rounded-full"
-          style={{
-            width: 48,
-            height: 48,
-            boxShadow: '0px 8px 24px rgba(0,0,0,0.14), 0px 2px 8px rgba(0,0,0,0.08)',
-          }}
-        >
-          <Plus className="w-5 h-5 text-[#FF5623]" strokeWidth={2.5} />
-        </Link>
-      </div>
+      {showFab && (
+        <div className="flex justify-end" style={{ marginBottom: 13 }}>
+          <Link
+            href="/create"
+            className="flex items-center justify-center bg-white rounded-full"
+            style={{
+              width: 48,
+              height: 48,
+              boxShadow: '0px 8px 24px rgba(0,0,0,0.14), 0px 2px 8px rgba(0,0,0,0.08)',
+            }}
+          >
+            <Plus className="w-5 h-5 text-[#FF5623]" strokeWidth={2.5} />
+          </Link>
+        </div>
+      )}
 
       {/* Bottom nav bar */}
       <div
