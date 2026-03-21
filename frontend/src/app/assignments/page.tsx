@@ -193,7 +193,7 @@ function EmptyState() {
       <h2 className="text-[20px] font-[700] text-gray-900 mb-3 tracking-[-0.04em] leading-[1.4]">
         No assignments yet
       </h2>
-      <p className="text-[14px] md:text-[16px] font-[400] text-[#5E5E5E] opacity-80 max-w-[280px] md:max-w-[486px] leading-[1.4] tracking-[-0.04em] mb-8 md:mb-12">
+      <p className="text-[16px] font-[400] text-[#5E5E5E] opacity-80 max-w-[280px] md:max-w-[486px] leading-[1.4] tracking-[-0.04em] mb-8 md:mb-12">
         Create your first assignment to start collecting and grading student submissions.
         You can set up rubrics, define marking criteria, and let AI assist with grading.
       </p>
@@ -202,7 +202,8 @@ function EmptyState() {
       <div className="h-[46px] p-[1.5px] rounded-full bg-gradient-to-b from-white/60 to-gray-400/20 shadow-lg">
         <Link
           href="/create"
-          className="flex items-center justify-center gap-2 h-full px-6 bg-[#181818] text-white font-bold text-sm rounded-full hover:bg-black transition-all group"
+          className="flex items-center justify-center gap-2 h-full px-6 bg-[#181818] text-white rounded-full hover:bg-black transition-all group"
+          style={{ fontSize: 16, fontWeight: 500, letterSpacing: '-0.04em', lineHeight: '140%', fontFamily: 'var(--font-bricolage, inherit)' }}
         >
           <Plus className="w-4 h-4 group-hover:scale-110 transition-transform" />
           Create Your First Assignment
@@ -255,7 +256,7 @@ function FilledState({
           <h1 style={{ fontSize: 20, fontWeight: 700, color: '#303030', lineHeight: '140%', letterSpacing: '-0.04em' }}>
             Assignments
           </h1>
-          <p style={{ fontSize: 14, fontWeight: 400, color: '#5E5E5E', lineHeight: '140%', letterSpacing: '-0.04em' }}>
+          <p style={{ fontSize: 14, fontWeight: 400, color: 'rgba(94,94,94,0.55)', lineHeight: '140%', letterSpacing: '-0.04em', fontFamily: 'var(--font-bricolage, inherit)' }}>
             Manage and create assignments for your classes.
           </p>
         </div>
@@ -355,8 +356,8 @@ function AssignmentCard({ assignment: a, onDelete, mobile = false }: {
       {/* Top: Title + Three Dots */}
       <div className="flex items-start justify-between gap-3">
         <h3
-          className="font-bold text-[#303030] text-[20px] leading-tight flex-1"
-          style={{ fontFamily: 'var(--font-bricolage, inherit)' }}
+          className="flex-1 text-[#303030]"
+          style={{ fontFamily: 'var(--font-bricolage, inherit)', fontSize: 24, fontWeight: 800, lineHeight: '120%', letterSpacing: '-0.04em' }}
         >
           {a.title}
         </h3>
