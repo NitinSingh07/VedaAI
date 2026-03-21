@@ -114,14 +114,14 @@ export default function ResultPage() {
         <div class="sec-instr">${sec.instruction}</div>
         ${sec.questions.map(q => `
           <div class="q">${q.number}. [${DIFF[q.difficulty] || q.difficulty}] ${q.text} [${q.marks} Marks]
-            ${q.options?.length ? `<div style="padding-left:16px;display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:3px">${q.options.map((o,i)=>`<span>${String.fromCharCode(65+i)}. ${o}</span>`).join('')}</div>` : ''}
+            ${q.options?.length ? `<div style="padding-left:16px;display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:3px">${q.options.map((o, i) => `<span>${String.fromCharCode(65 + i)}. ${o}</span>`).join('')}</div>` : ''}
           </div>`).join('')}
       `).join('')}
       <div class="end">End of Question Paper</div>
-      ${paper.sections.some(s=>s.questions.some(q=>q.answer)) ? `
+      ${paper.sections.some(s => s.questions.some(q => q.answer)) ? `
         <div class="ak">
           <div class="ak-title">Answer Key</div>
-          ${paper.sections.flatMap(s=>s.questions.filter(q=>q.answer).map(q=>`<div class="ak-item"><strong>${q.number}.</strong> ${q.answer}</div>`)).join('')}
+          ${paper.sections.flatMap(s => s.questions.filter(q => q.answer).map(q => `<div class="ak-item"><strong>${q.number}.</strong> ${q.answer}</div>`)).join('')}
         </div>` : ''}
     </body></html>`);
     win.document.close();

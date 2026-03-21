@@ -58,9 +58,9 @@ export const processGenerationJob = async (data: QuestionGenerationJob): Promise
     await assignment.save();
 
     const userMessage = err?.status === 401
-      ? 'Invalid OpenAI API key. Check OPENAI_API_KEY in .env'
+      ? 'Invalid Groq API key. Check GROQ_API_KEY in .env'
       : err?.status === 429
-      ? 'OpenAI rate limit / quota exceeded. Check your plan.'
+      ? 'Groq rate limit / quota exceeded. Check your plan.'
       : err?.status === 404
       ? 'OpenAI model not found. Check model name.'
       : `Generation failed: ${err?.message || 'Unknown error'}`;

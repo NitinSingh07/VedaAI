@@ -3,24 +3,13 @@ import { IAssignment } from '../models/Assignment';
 import { ISection, IQuestion } from '../models/QuestionPaper';
 import { v4 as uuidv4 } from 'uuid';
 
-// Supports: Groq (free), OpenAI, or any OpenAI-compatible API
-// Set GROQ_API_KEY for free tier → https://console.groq.com
-// Set OPENAI_API_KEY for OpenAI
-const getClient = () => {
-  if (process.env.GROQ_API_KEY) {
-    return {
-      client: new OpenAI({
-        apiKey: process.env.GROQ_API_KEY,
-        baseURL: 'https://api.groq.com/openai/v1',
-      }),
-      model: 'llama-3.3-70b-versatile',
-    };
-  }
-  return {
-    client: new OpenAI({ apiKey: process.env.OPENAI_API_KEY }),
-    model: 'gpt-4o-mini',
-  };
-};
+const getClient = () => ({
+  client: new OpenAI({
+    apiKey: process.env.GROQ_API_KEY,
+    baseURL: 'https://api.groq.com/openai/v1',
+  }),
+  model: 'llama-3.3-70b-versatile',
+});
 
 interface ParsedPaper {
   title: string;

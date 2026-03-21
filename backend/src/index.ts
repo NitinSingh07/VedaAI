@@ -26,25 +26,10 @@ app.use('/api/assignments', assignmentRoutes);
 app.get('/health', (_req, res) => res.json({
   status: 'ok',
   redis: isRedisAvailable,
-  openai_key_set: !!process.env.OPENAI_API_KEY,
+  groq_key_set: !!process.env.GROQ_API_KEY,
   timestamp: new Date().toISOString(),
 }));
 
-// Quick OpenAI key test endpoint
-app.get('/api/test-ai', async (_req, res) => {
-  try {
-    const OpenAI = (await import('openai')).default;
-    const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-    const result = await client.chat.completions.create({
-      model: 'gpt-4o-mini',
-      max_tokens: 10,
-      messages: [{ role: 'user', content: 'Say "ok"' }],
-    });
-    res.json({ success: true, reply: result.choices[0]?.message?.content });
-  } catch (err: any) {
-    res.status(500).json({ success: false, error: err?.message, status: err?.status });
-  }
-});
 
 wsService.initialize(server);
 

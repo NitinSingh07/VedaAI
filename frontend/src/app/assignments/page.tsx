@@ -9,6 +9,8 @@ import {
 } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
 import Topbar from '@/components/Topbar';
+import MobileTopbar from '@/components/MobileTopbar';
+import MobileBottomNav from '@/components/MobileBottomNav';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
@@ -61,11 +63,23 @@ export default function AssignmentsPage() {
 
   return (
     <div className="flex min-h-screen bg-[#F0F0F5]">
-      <Sidebar assignmentCount={assignments.length} />
-      <div className="ml-[328px] flex-1 flex flex-col min-h-screen">
-        <Topbar title="Assignment" showBack />
+      {/* Sidebar — desktop only */}
+      <div className="hidden md:block">
+        <Sidebar assignmentCount={assignments.length} />
+      </div>
 
-        <main className="flex-1 pt-20 pb-24">
+      {/* Mobile topbar & bottom nav */}
+      <MobileTopbar />
+      <MobileBottomNav />
+
+      <div className="flex-1 flex flex-col min-h-screen md:ml-[328px]">
+        {/* Desktop topbar */}
+        <div className="hidden md:block">
+          <Topbar title="Assignment" showBack />
+        </div>
+
+        {/* pt-[78px] on mobile (topbar 56+12+10=78), pt-20 on desktop */}
+        <main className="flex-1 pt-[78px] md:pt-20 pb-[155px] md:pb-24">
           {loading ? (
             <div className="flex items-center justify-center py-32">
               <Loader2 className="w-6 h-6 text-gray-400 animate-spin" />
@@ -83,7 +97,7 @@ export default function AssignmentsPage() {
         </main>
 
         {assignments.length > 0 && (
-          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 ml-[164px] z-20">
+          <div className="hidden md:block fixed bottom-8 left-1/2 -translate-x-1/2 ml-[164px] z-20">
             <Link
               href="/create"
               className="flex items-center gap-2.5 bg-[#1A1A2E] text-white font-semibold text-sm px-6 py-3.5 rounded-full shadow-2xl hover:bg-black transition-all hover:scale-105 active:scale-95"
@@ -101,10 +115,9 @@ export default function AssignmentsPage() {
 
 function EmptyState() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[600px] px-8 text-center py-16">
-      {/* Precision Illustration Area — (Reference 691: 1:1 Surgical Rebuild) */}
-      <div className="mb-12 relative">
-        <svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100svh-240px)] md:min-h-[600px] px-6 text-center py-8 md:py-16">
+      <div className="mb-6 md:mb-12 relative">
+        <svg width="220" height="220" className="md:w-[300px] md:h-[300px]" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="blobGradient" x1="150" y1="30" x2="150" y2="270" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stopColor="#F2F2F2" />
@@ -180,7 +193,7 @@ function EmptyState() {
       <h2 className="text-[20px] font-[700] text-gray-900 mb-3 tracking-[-0.04em] leading-[1.4]">
         No assignments yet
       </h2>
-      <p className="text-[16px] font-[400] text-[#5E5E5E] opacity-80 max-w-[486px] leading-[1.4] tracking-[-0.04em] mb-12">
+      <p className="text-[14px] md:text-[16px] font-[400] text-[#5E5E5E] opacity-80 max-w-[280px] md:max-w-[486px] leading-[1.4] tracking-[-0.04em] mb-8 md:mb-12">
         Create your first assignment to start collecting and grading student submissions.
         You can set up rubrics, define marking criteria, and let AI assist with grading.
       </p>
@@ -208,7 +221,7 @@ function FilledState({
   onDelete: (id: string) => void;
 }) {
   return (
-    <div className="px-6 pt-4 flex flex-col gap-[10px]">
+    <div className="px-4 md:px-6 pt-4 flex flex-col gap-[10px]">
       {/* Header — Figma: Fill(1100) x Hug(50), px-2, gap-4 */}
       <div className="flex items-center gap-3 px-2">
         <div
@@ -259,7 +272,7 @@ function FilledState({
         </button>
 
         {/* Search — Figma: w=380px, h=44px, radius=100px, border=1px #000 20%, padding=11px 16px */}
-        <div className="relative w-[380px]">
+        <div className="relative w-[180px] md:w-[380px]">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A9A9A9]" />
           <input
             type="text"
