@@ -55,6 +55,8 @@ export default function CreateAssessmentPage() {
   const router = useRouter();
   const pathname = usePathname();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const dueDateDesktopRef = useRef<HTMLInputElement>(null);
+  const dueDateMobileRef = useRef<HTMLInputElement>(null);
 
   const title = '';
   const subject = '';
@@ -389,17 +391,20 @@ export default function CreateAssessmentPage() {
                 <div>
                   <label className="block text-[14px] font-semibold text-[#303030] mb-2">Due Date</label>
                   <div className="relative">
-                    <input type="text" value={dueDate} placeholder="Choose a chapter"
-                      onFocus={(e) => { e.currentTarget.type = 'date'; e.currentTarget.min = new Date().toISOString().split('T')[0]; }}
-                      onBlur={(e) => { if (!e.currentTarget.value) e.currentTarget.type = 'text'; }}
+                    <input
+                      ref={dueDateDesktopRef}
+                      type="date"
+                      value={dueDate}
+                      min={new Date().toISOString().split('T')[0]}
                       onChange={(e) => setDueDate(e.target.value)}
                       className={`w-full px-5 py-3.5 pr-14 rounded-2xl border text-[14px] focus:outline-none focus:border-gray-400 transition-colors [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute ${errors.dueDate ? 'border-red-300 bg-red-50' : 'border-[#DEDEDE] bg-[#F6F6F6]'} ${dueDate ? 'text-[#303030]' : 'text-[#A9A9A9]'}`}
                     />
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 border border-[#DEDEDE] rounded-xl flex items-center justify-center pointer-events-none bg-white">
+                    <button type="button" onClick={() => dueDateDesktopRef.current?.showPicker()}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 border border-[#DEDEDE] rounded-xl flex items-center justify-center bg-white">
                       <svg className="w-4 h-4 text-[#303030]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                         <rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
                       </svg>
-                    </div>
+                    </button>
                   </div>
                 </div>
 
@@ -620,11 +625,10 @@ export default function CreateAssessmentPage() {
                 </label>
                 <div style={{ position: 'relative' }}>
                   <input
-                    type="text"
+                    ref={dueDateMobileRef}
+                    type="date"
                     value={dueDate}
-                    placeholder="DD-MM-YYYY"
-                    onFocus={(e) => { e.currentTarget.type = 'date'; e.currentTarget.min = new Date().toISOString().split('T')[0]; }}
-                    onBlur={(e) => { if (!e.currentTarget.value) e.currentTarget.type = 'text'; }}
+                    min={new Date().toISOString().split('T')[0]}
                     onChange={(e) => setDueDate(e.target.value)}
                     className="[&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute"
                     style={{
@@ -640,16 +644,20 @@ export default function CreateAssessmentPage() {
                     }}
                   />
                   {/* Calendar icon button */}
-                  <div style={{
-                    position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-                    width: 32, height: 32, borderRadius: 10, border: '1px solid #DEDEDE',
-                    background: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    pointerEvents: 'none',
-                  }}>
+                  <button
+                    type="button"
+                    onClick={() => dueDateMobileRef.current?.showPicker()}
+                    style={{
+                      position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
+                      width: 32, height: 32, borderRadius: 10, border: '1px solid #DEDEDE',
+                      background: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer',
+                    }}
+                  >
                     <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#303030" strokeWidth="2">
                       <rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
                     </svg>
-                  </div>
+                  </button>
                 </div>
               </div>
 
